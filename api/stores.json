@@ -1,0 +1,159 @@
+{
+    "stores": [
+        {
+        "name": "Macy's Herald Square ",
+        "formatted_address": "151 W 34th St, New York",
+        "geometry": {
+        "lat":"40.750782",
+        "lng":"-73.988959"
+        },
+        "hours_open": [{
+            "Monday": ["data not available"],
+            "Tuesday": ["data not available"],
+            "Wednesday": ["data not available"],
+            "Thursday": ["data not available"],
+            "Friday": ["data not available"],
+            "Saturday": ["data not available"],
+            "Sunday": ["data not available"]
+        }],
+    
+        "busy-hours": [{
+            "Monday": [12, 13, 14, 15, 16, 17, 18, 19],
+            "Tuesday": [12, 13, 14, 15, 16, 17],
+            "Wednesday": [12, 13, 14, 15, 16, 17, 18],
+            "Thursday":[12, 13, 14, 15, 16, 17, 18, 19],
+            "Friday": [12, 13, 14, 15, 16, 17, 18, 19],
+            "Saturday": [12, 13, 14, 15, 16, 17, 18, 19],
+            "Sunday": [12, 13, 14, 15, 16, 17, 18, 19]
+    
+        }],
+        
+        "quiet-hours": [{
+            "Monday": [10, 20, 21],
+            "Tuesday": [10, 11, 20, 21],
+            "Wednesday": [10, 11, 20, 21],
+            "Thursday":[10, 21],
+            "Friday": [10, 20, 21],
+            "Saturday": [10, 21],
+            "Sunday": [10, 21]
+        }]
+        },
+
+        {
+            "name": "FAO Schwarz",
+            "formatted_address": "30 Rockefeller Plaza, New York",
+            "geometry": {
+            "lat":"40.758935",
+            "lng":"-73.980049"
+            },
+            "hours_open": [{
+                "Monday": ["data not available"],
+                "Tuesday": ["data not available"],
+                "Wednesday": ["data not available"],
+                "Thursday": ["data not available"],
+                "Friday": ["data not available"],
+                "Saturday": ["data not available"],
+                "Sunday": ["data not available"]
+            }],
+        
+            "busy-hours": [{
+                "Monday": [12, 13, 14, 15, 16, 17, 18],
+                "Tuesday": [12, 13, 14, 15, 16],
+                "Wednesday": [12, 13, 14, 15, 16, 17],
+                "Thursday":[12, 13, 14, 15, 16, 17, 18, 19],
+                "Friday": [12, 13, 14, 15, 16, 17, 18, 19],
+                "Saturday": [11, 12, 13, 14, 15, 16, 17, 18, 19],
+                "Sunday": [12, 13, 14, 15, 16, 17]
+        
+            }],
+            
+            "quiet-hours": [{
+                "Monday": [10, 19],
+                "Tuesday": [10, 18, 19],
+                "Wednesday": [10, 19],
+                "Thursday":[10],
+                "Friday": [10],
+                "Saturday": [10],
+                "Sunday": [10]
+            }]
+            },
+
+            {
+                "name": "Bergdorf Goodman",
+                "formatted_address": "754 5th Ave, New York",
+                "geometry": {
+                "lat":"40.773998",
+                "lng":"-73.966003"
+                },
+                "hours_open": [{
+                    "Monday": ["data not available"],
+                    "Tuesday": ["data not available"],
+                    "Wednesday": ["data not available"],
+                    "Thursday": ["data not available"],
+                    "Friday": ["data not available"],
+                    "Saturday": ["data not available"],
+                    "Sunday": ["data not available"]
+                }],
+            
+                "busy-hours": [{
+                    "Monday": [11, 12, 13, 14, 15, 16, 17],
+                    "Tuesday": [12, 13, 14, 15, 16, 17],
+                    "Wednesday": [12, 13, 14, 15, 16, 17],
+                    "Thursday":[12, 13, 14, 15, 16],
+                    "Friday": [11, 12, 13, 14, 15, 16],
+                    "Saturday": [13, 14, 15, 16, 17],
+                    "Sunday": [13, 14, 15, 16]
+            
+                }],
+                
+                "quiet-hours": [{
+                    "Monday": [10, 19],
+                    "Tuesday": [10,19],
+                    "Wednesday": [10, 19],
+                    "Thursday":[10, 19],
+                    "Friday": [10, 19],
+                    "Saturday": [10, 11, 19],
+                    "Sunday": [11, 18]
+                }]
+                },
+
+                {
+                    "name": "Modell's Sportig Goods",
+                    "formatted_address": "607 6th Ave, New York",
+                    "geometry": {
+                    "lat":"40.740030",
+                    "lng":"-73.995335"
+                    },
+                    "hours_open": [{
+                        "Monday": ["data not available"],
+                        "Tuesday": ["data not available"],
+                        "Wednesday": ["data not available"],
+                        "Thursday": ["data not available"],
+                        "Friday": ["data not available"],
+                        "Saturday": ["data not available"],
+                        "Sunday": ["data not available"]
+                    }],
+                
+                    "busy-hours": [{
+                        "Monday": [13, 14, 15, 16, 17, 18],
+                        "Tuesday": [12, 13, 14, 15, 16, 17, 18],
+                        "Wednesday": [13, 14, 15, 16, 17, 18],
+                        "Thursday":[11, 12, 13, 14, 15, 16, 17, 18, 19],
+                        "Friday": [13, 14, 15, 16, 17, 18],
+                        "Saturday": [12, 13, 14, 15, 16, 17],
+                        "Sunday": [12, 13, 14, 15, 16, 17]
+                
+                    }],
+                    
+                    "quiet-hours": [{
+                        "Monday": [9, 10, 20, 21],
+                        "Tuesday": [9, 10, 20, 21],
+                        "Wednesday": [9, 10, 20, 21],
+                        "Thursday":[9, 21],
+                        "Friday": [9, 10, 20, 21],
+                        "Saturday": [9, 10, 20, 21],
+                        "Sunday": [10, 19]
+                    }]
+                    }
+    ]
+}
