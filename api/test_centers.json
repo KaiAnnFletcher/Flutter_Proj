@@ -1,0 +1,98 @@
+{
+    "test_centers": [
+        {
+        "name": "NewYork Presbyterian - Lower Manhattan Hospital",
+        "formatted_address": "170 William St, New York, NY 10038",
+        "geometry": {
+        "lat":"40.712464",
+        "lng":"-74.005231"
+        },
+        "hours_open": [{
+            "Monday": ["24 hours"],
+            "Tuesday": ["24 hours"],
+            "Wednesday": ["24 hours"],
+            "Thursday": ["24 hours"],
+            "Friday": ["24 hours"],
+            "Saturday": ["24 hours"],
+            "Sunday": ["24 hours"]
+        }],
+    
+        "testing-details": ["Appointement required",
+        "Pysician Order Required", 
+        "Screening required", 
+        "Restrictions Apply"],
+        
+        "URL": "https://nyp.org/acn/primary-care"
+    },
+
+    {
+        "name": "CityMD Urgent Care- Fulton",
+        "formatted_address": "138 Fulton St, New York, NY 10038",
+        "geometry": {
+        "lat":"40.710519",
+        "lng":"-74.008326"
+        },
+        "hours_open": [{
+            "Monday": ["8:00-20:00"],
+            "Tuesday": ["8:00-20:00"],
+            "Wednesday": ["8:00-20:00"],
+            "Thursday": ["8:00-20:00"],
+            "Friday": ["8:00-19:00"],
+            "Saturday": ["9:00-17:00"],
+            "Sunday": ["9:00-17:00"]
+        }],
+    
+        "testing-details": ["Anti-body testing"],
+        
+        "URL": "Source: https://www.citymd.com/urgent-care-locations"
+    },
+
+    {
+        "name": "Coalition of Asian-American IPA - Manhattan",
+        "formatted_address": "",
+        "geometry": {
+        "lat":"40.717008",
+        "lng":"-73.998399"
+        },
+        "hours_open": [{
+            "Monday": ["Closed"],
+            "Tuesday": ["Closed"],
+            "Wednesday": ["9:30-16:30"],
+            "Thursday": ["Closed"],
+            "Friday": ["Closed"],
+            "Saturday": ["Closed"],
+            "Sunday": ["Closed"]
+        }],
+    
+        "testing-details": ["Screening Required",
+        "Walk-ins welcome, but scheduling preferred"],
+        
+        "URL": "http://www.caipa.net/"
+    },  
+
+    {
+        "name": "GoHealth Urgent Care Center - Greenwich Village",
+        "formatted_address": "41 E 8th St, New York, NY 10003",
+        "geometry": {
+        "lat":"40.734692",
+        "lng":"-73.995089"
+        },
+        "hours_open": [{
+            "Monday": ["8:00-20:00"],
+            "Tuesday": ["8:00-20:00"],
+            "Wednesday": ["8:00-20:00"],
+            "Thursday": ["8:00-20:00"],
+            "Friday": ["8:00-20:00"],
+            "Saturday": ["9:00-17:00"],
+            "Sunday": ["9:00-17:00"]
+        }],
+    
+        "testing-details": ["Appointment Required",
+        "Physician Order Required", 
+        "Screening Required"],
+        
+        "URL": "https://www.gohealthuc.com/nyc"
+    }
+
+    ]
+}

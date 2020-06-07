@@ -1,0 +1,164 @@
+{
+    "churches": [
+        {
+        "name": "St Patrick's Cathedral",
+        "formatted_address": "5th Ave, New York",
+        "geometry": {
+        "lat":"40.773998",
+        "lng":"-73.966003"
+        },
+
+        "hours_open": [{
+            "Monday": ["7:00-20:30"],
+            "Tuesday": ["7:00-20:30"],
+            "Wednesday": ["7:00-20:30"],
+            "Thursday": ["7:00-20:30"],
+            "Friday": ["7:00-20:30"],
+            "Saturday": ["7:00-20:30"],
+            "Sunday": ["7:00-20:30"]
+        }],
+    
+        "busy-hours": [{
+            "Monday": [12, 13, 14, 15, 16, 17],
+            "Tuesday": [12, 13, 14, 15, 16, 17],
+            "Wednesday": [12, 13, 14, 15, 16, 17],
+            "Thursday":[12, 13, 14, 15, 16, 17, 18],
+            "Friday": [12, 13, 14, 15, 16, 17, 18],
+            "Saturday": [12, 13, 14, 15, 16, 17, 18],
+            "Sunday": [11, 12, 13, 14, 15, 16, 17, 18]
+    
+        }],
+        
+        "quiet-hours": [{
+            "Monday": [7, 8, 9, 19, 20],
+            "Tuesday": [7, 8, 9, 19, 20],
+            "Wednesday": [7, 8, 9, 19, 20],
+            "Thursday":[7, 8, 9, 20],
+            "Friday": [7, 8, 9, 20],
+            "Saturday": [7, 8, 9, 20],
+            "Sunday": [7, 8, 9, 20]
+        }]   
+    },
+    
+    {
+        "name": "Cathedral Church of St. John the Divine",
+        "formatted_address": "1047 Amsterdam Ave, New York",
+        "geometry": {
+        "lat":"40.803486",
+        "lng":"-73.961937"
+        },
+
+        "hours_open": [{
+            "Monday": ["no data available"],
+            "Tuesday": ["no data available"],
+            "Wednesday": ["no data available"],
+            "Thursday": ["no data available"],
+            "Friday": ["no data available"],
+            "Saturday": ["no data available"],
+            "Sunday": ["no data available"]
+        }],
+    
+        "busy-hours": [{
+            "Monday": [11, 12, 13],
+            "Tuesday": [11, 12, 13, 14, 15, 16, 17],
+            "Wednesday": [11, 12, 13, 14],
+            "Thursday":[11, 12, 13, 14, 15],
+            "Friday": [10, 11, 12, 13, 14, 17],
+            "Saturday": [12, 13, 14, 15],
+            "Sunday": [10, 11, 12, 13]
+    
+        }],
+        
+        "quiet-hours": [{
+            "Monday": [7, 8, 9, 17],
+            "Tuesday": [7, 8, 9],
+            "Wednesday": [7, 8, 9, 17],
+            "Thursday":[7, 8],
+            "Friday": [7, 8],
+            "Saturday": [7, 8, 9],
+            "Sunday": [7, 8, 16, 17]
+        }]   
+    },
+
+    {
+        "name": "Trinity Church Wall Street",
+        "formatted_address": "75 Broadway, New York",
+        "geometry": {
+        "lat":"40.708061",
+        "lng":"-74.012184"
+        },
+
+        "hours_open": [{
+            "Monday": ["8:00-18:00"],
+            "Tuesday": ["8:00-18:00"],
+            "Wednesday": ["8:00-18:00"],
+            "Thursday": ["8:00-18:00"],
+            "Friday": ["8:00-18:00"],
+            "Saturday": ["8:00-18:00"],
+            "Sunday": ["8:00-18:00"]
+        }],
+    
+        "busy-hours": [{
+            "Monday": [11, 12, 13, 14],
+            "Tuesday": [11, 12, 13, 14, 15],
+            "Wednesday": [11, 12, 13, 14, 15],
+            "Thursday":[11, 12, 13, 14, 15, 16],
+            "Friday": [11, 12, 13, 14, 15],
+            "Saturday": [11, 12, 13, 14, 15],
+            "Sunday": [11, 12, 13, 14, 15, 1]
+    
+        }],
+        
+        "quiet-hours": [{
+            "Monday": [8, 9, 17],
+            "Tuesday": [8, 9, 17],
+            "Wednesday": [8, 9, 17],
+            "Thursday":[8, 9],
+            "Friday": [8, 19, 17],
+            "Saturday": [8, 19, 17],
+            "Sunday": [8, 9, 17]
+        }]   
+    },
+
+    {
+        "name": "The Basilica of St. Patrick's Old Cathedral",
+        "formatted_address": "263 Mulberry St, New York",
+        "geometry": {
+        "lat":"40.723556",
+        "lng":"-73.995114"
+        },
+
+        "hours_open": [{
+            "Monday": ["11:00-17:00"],
+            "Tuesday": ["11:00-17:00"],
+            "Wednesday": ["11:00-17:00"],
+            "Thursday": ["11:00-17:00"],
+            "Friday": ["11:00-19:00"],
+            "Saturday": ["11:00-19:00"],
+            "Sunday": ["11:00-18:00"]
+        }],
+    
+        "busy-hours": [{
+            "Monday": [12, 13, 14],
+            "Tuesday": [12, 13, 14],
+            "Wednesday": [11, 12, 13, 14],
+            "Thursday":[12, 13, 14, 15],
+            "Friday": [11, 12, 13, 14, 15, 16, 17],
+            "Saturday": [12, 13, 14, 15, 16],
+            "Sunday": [11, 12, 14, 18, 19]
+    
+        }],
+        
+        "quiet-hours": [{
+            "Monday": [8, 9, 16, 17],
+            "Tuesday": [8, 9, 10, 17],
+            "Wednesday": [8, 9, 17],
+            "Thursday":[8, 9, 10],
+            "Friday": [8, 9],
+            "Saturday": [8, 9, 18],
+            "Sunday": [8, 9, 16]
+        }]   
+    }
+     
+    ]
+}
