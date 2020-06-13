@@ -3,13 +3,13 @@ import 'package:Flutter_Proj/model/geometry.dart';
 import 'package:Flutter_Proj/model/hoursOpen.dart';
 
 class TestCenterList {
-  List<TestCenters> testCenters;
+  List<TestCenters> testCenters = new List<TestCenters>();
 
   TestCenterList({this.testCenters});
 
   TestCenterList.fromJson(Map<String, dynamic> json) {
     if (json['test_centers'] != null) {
-      testCenters = new List<TestCenters>();
+      //testCenters = new List<TestCenters>();
       json['test_centers'].forEach((v) {
         testCenters.add(new TestCenters.fromJson(v));
       });
