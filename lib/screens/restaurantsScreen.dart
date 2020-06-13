@@ -27,21 +27,23 @@ Future wait(int seconds) {
   return new Future.delayed(Duration(seconds: seconds), () => {});
 }
 
-class GoogleMapWidget extends StatefulWidget {
+class RestaurantWidget extends StatefulWidget {
   @override
-  GoogleMapState createState() => GoogleMapState();
+  RestaurantState createState() => RestaurantState();
   /**const GoogleMapWidget({Key key, this.choice}) : super(key: key);
 
   final Choice choice; */
 }
 
-class GoogleMapState extends State<GoogleMapWidget> {
+class RestaurantState extends State<RestaurantWidget> {
   Completer<GoogleMapController> _controller = Completer();
   Future<IndiaCasesRootNet> futureIndiaTotalCases;
   static RestaurantList _restaurantList;
   static Set<Marker> markerSet;
   bool _loaded = false;
   double zoomVal = 5.0;
+  static var today;
+  static var now = DateTime.parse("1969-07-20 20:18:04Z");  
   @override
   void initState() {
     super.initState();
@@ -51,7 +53,35 @@ class GoogleMapState extends State<GoogleMapWidget> {
           _restaurantList = s;
           _loaded = true;
         }));
+        if(_restaurantList == null) return ;
         markerSet = createMarkerSetFromJsonData(_restaurantList);
+        today = findTodayWeekday();
+  }
+   static String findTodayWeekday(){
+    print (DateTime.parse('1969-07-20 20:18:04Z').weekday);
+         switch (DateTime.parse('1969-07-20 20:18:04Z').weekday) {
+        case 1:
+          return "Monday";
+          break;
+        case 2:
+          return "Tuesday";
+          break;
+        case 3:
+          return "Wednesday";
+          break;
+          case 4:
+          return "Thursday";
+          break;
+          case 5:
+          return "Friday";
+          break;
+          case 6:
+          return "Saturday";
+          break;
+          case 7:
+          return "Sunday";
+          break;
+      }
   }
   Set<Marker> createMarkerSetFromJsonData(RestaurantList list){
     Set<Marker> markerSet = new HashSet<Marker>();
@@ -106,26 +136,12 @@ class GoogleMapState extends State<GoogleMapWidget> {
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        //_buildTopRowContainer(),
-        /* Align(
-          alignment: Alignment.topLeft,
-          child: FloatingActionButton(
-            clipBehavior: Clip.hardEdge,
-
-            child: buildBottomRowContainer(context),
-            //onPressed: buildBottomRowContainer(context),
-          ),
-        ), */
-        // buildBottomRowContainer(context),
+        
         _buildGoogleMap(context),
         _zoomminusfunction(),
           _zoomplusfunction(),
           _buildContainer(),
-
-        //SizedBox(width: 10.0,height: 300.0,
-        //child:  buildBottomRowContainer(context),),
-        //_buildContainer(),
-        //_buildRowContainer(),
+      
       ],
     );
   }
@@ -163,9 +179,11 @@ Future<void> _gotoLocation(double lat,double long) async {
           _gotoLocation(double.parse(restaurant.geometry.lat),double.parse(restaurant.geometry.lng));
         },
         child:Container(
+          //color: Colors.,
               child: new FittedBox(
+                
                 child: Material(
-                    color: Colors.white,
+                    color: Colors.red,
                     elevation: 14.0,
                     borderRadius: BorderRadius.circular(24.0),
                     shadowColor: Color(0x802196F3),
@@ -183,9 +201,11 @@ Future<void> _gotoLocation(double lat,double long) async {
                             ),
                           ),),
                           Container(
+                           // color: Colors.green,
+                            width: 200,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: myDetailsContainer1(restaurant),
+                            child: restaurantDetailsContainer(restaurant),
                           ),
                         ),
 
@@ -195,29 +215,9 @@ Future<void> _gotoLocation(double lat,double long) async {
             ),
     );
   }
-  @override
-  Widget buildBottomRowContainer(BuildContext context) {
-    return FutureBuilder<IndiaCasesRootNet>(
-      future: futureIndiaTotalCases,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return _buildRowContainer(
-              snapshot.data.data.unOffSummary[0].active,
-              snapshot.data.data.unOffSummary[0].recovered,
-              snapshot.data.data.unOffSummary[0].total,
-              snapshot.data.data.unOffSummary[0].deaths);
-        } else if (snapshot.hasError) {
-          return Text("${snapshot.error}");
-        }
-
-        // By default, show a loading spinner.
-        return CircularProgressIndicator();
-      },
-    );
-  }
 
   Widget _buildRowContainer(
-      int activeCases, int recoveredCases, int totalCases, int deathCases) {
+      String hour) {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Container(
@@ -240,78 +240,21 @@ Future<void> _gotoLocation(double lat,double long) async {
           children: <Widget>[
             Counter(
               color: kInfectedColor,
-              number: activeCases,
-              title: "Infected",
+              number: 0,
+              title: hour,
             ),
-            Counter(
-              color: kDeathColor,
-              number: deathCases,
-              title: "Deaths",
-            ),
-            Counter(
-              color: kRecovercolor,
-              number: recoveredCases,
-              title: "Recovered",
-            ),
-            Counter(
-              color: Colors.blueAccent,
-              number: totalCases,
-              title: "Total",
-            ),
+           
           ],
         ),
       ),
     );
   }
 
-  /* Widget _buildTopRowContainer() {
-    return Align(
-      alignment: Alignment.topCenter,
-      child: SizedBox(
-        height: 100.0,
-        child: ListView(
-          scrollDirection: Axis.horizontal,
-          children: <Widget>[
-            // buildBarItem(CupertinoIcons.news,_newsFunction),
-
-            buildBarItem(MyFlutterApp.newspaper, _newsFunction, 'News'),
-            buildBarItem(
-                MyFlutterApp.online_education, _learningFunction, 'e-Learning'),
-            //buildBarItem(CupertinoIcons.book_solid,_learningFunction),
-            //buildBarItem(MdiIcons.heart,_fitnessFunction),
-            buildBarItem(Icons.store, _storeFunction, 'Store Locator'),
-            buildBarItem(
-                MyFlutterApp.diet_1_, _fitnessFunction, 'Healthy Meals'),
-          ],
-        ),
-      ),
-    );
-  } */
-
-  Widget buildBarItem(
-      IconData iconArgument, Function functionName, String name) {
-    return Container(
-        width: 80.0,
-        margin: EdgeInsets.all(4.0),
-        color: Colors.white,
-        child: Column(children: [
-          IconButton(icon: Icon(iconArgument), onPressed: functionName),
-          Text(
-            name,
-            style: TextStyle(
-              fontSize: 10,
-              color: Colors.black45,
-            ),
-          ),
-        ])
-        //child: Icon(icon),
-
-        );
-  }
   Widget _buildContainer() {
     return Align(
       alignment: Alignment.bottomLeft,
       child: Container(
+        color:Colors.red,
         margin: EdgeInsets.symmetric(vertical: 20.0),
         height: 150.0,
         child: ListView(
@@ -352,85 +295,29 @@ Future<void> _gotoLocation(double lat,double long) async {
     );
   }
 
-  Widget myDetailsContainer1(Restaurant restaurant) {
+  Widget restaurantDetailsContainer(Restaurant restaurant) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.only(left: 8.0),
           child: Container(
+              width:180,
               child: Text(restaurant.name,
+              textAlign: TextAlign.center,
             style: TextStyle(
-                color: Colors.red,//Color(0xff6200ee),
+                color: Colors.black,//Color(0xff6200ee),
                 fontSize: 24.0,
                 fontWeight: FontWeight.bold),
           )),
         ),
         SizedBox(height:5.0),
         Container(
-              child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Container(
-                  child: Text(
-                "4.1",
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 18.0,
-                ),
-              )),
-              Container(
-                child: Icon(
-                  FontAwesomeIcons.solidStar,
-                  color: Colors.amber,
-                  size: 15.0,
-                ),
-              ),
-              Container(
-                child: Icon(
-                  FontAwesomeIcons.solidStar,
-                  color: Colors.amber,
-                  size: 15.0,
-                ),
-              ),
-              Container(
-                child: Icon(
-                  FontAwesomeIcons.solidStar,
-                  color: Colors.amber,
-                  size: 15.0,
-                ),
-              ),
-              Container(
-                child: Icon(
-                  FontAwesomeIcons.solidStar,
-                  color: Colors.amber,
-                  size: 15.0,
-                ),
-              ),
-              Container(
-                child: Icon(
-                  FontAwesomeIcons.solidStarHalf,
-                  color: Colors.amber,
-                  size: 15.0,
-                ),
-              ),
-               Container(
-                  child: Text(
-                "(946)",
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 18.0,
-                ),
-              )),
-            ],
-          )),
-          SizedBox(height:5.0),
-        Container(
           child:  Row(
             children: <Widget>[
               Text('Delivery:',
                  style: TextStyle(
-                  color: Colors.red,
+                  color: Colors.black,
                   fontSize: 15.0,
                   fontWeight: FontWeight.bold,
                 ),
@@ -445,7 +332,7 @@ Future<void> _gotoLocation(double lat,double long) async {
               SizedBox(width: 5,),
               Text('TakeAway:',
               style: TextStyle(
-                  color: Colors.red,
+                  color: Colors.black,
                   fontSize: 15.0,
                   fontWeight: FontWeight.bold,
                 ),),
@@ -458,89 +345,145 @@ Future<void> _gotoLocation(double lat,double long) async {
               ), 
             ],
           )
-        )          
-             
-         /**  SizedBox(height:5.0),
+        ),     
+          SizedBox(height:5.0),
         Container(
                   child: Text(
-                "American \u00B7 \u0024\u0024 \u00B7 1.6 mi",
+                "Open Timings: ${restaurant.hoursOpen[0].monday}",
                 style: TextStyle(
                   color: Colors.black54,
-                  fontSize: 18.0,
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.w700,
                 ),
               )),
               SizedBox(height:5.0),
         Container(
             child: Text(
-          "Closed \u00B7 Opens 17:00 Thu",
+          "Busy Hour",
           style: TextStyle(
-              color: Colors.black54,
+              color: Colors.black,
               fontSize: 18.0,
               fontWeight: FontWeight.bold),
         )),
-        **/
+       
+        SizedBox(height: 5.0),
+        Container(
+            child: FlatButton(
+                child: Text(
+                  "Timing details",
+                  style: TextStyle(
+                      color: Colors.black87,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.underline,
+                      ),
+                ),
+                onPressed: () {
+                  showDialog(context: context,
+                  builder: (BuildContext context) => _buildHourDetailsDialog(context,restaurant));})),
+      
+      ],
+    );
+  }
+  Widget _buildHourDetailsDialog(BuildContext context, Restaurant restaurant)  {
+    return new AlertDialog(
+      backgroundColor: Colors.black38,
+      
+      title:  Text('$today Timings ',style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold), ),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          //var now = DateTime.parse('1969-07-20 20:18:04Z').day;
+          Text(
+            'BusyHours Today',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+          ),
+          Text(
+            (() {
+              switch (today) {
+                case "Monday":
+                  return "${restaurant.busyHours[0].monday.toString()}";
+                  break;
+                case "Tuesday":
+                  return "${restaurant.busyHours[0].tuesday.toString()}";
+                  break;
+                  case "Wednesday":
+                  return "${restaurant.busyHours[0].wednesday.toString()}";
+                  break;
+                  case "Thursday":
+                  return "${restaurant.busyHours[0].thursday.toString()}";
+                  break;
+                  case "Friday":
+                  return "${restaurant.busyHours[0].friday.toString()}";
+                  break;
+                  case "Saturday":
+                  return "${restaurant.busyHours[0].saturday.toString()}";
+                  break;
+                  case "Sunday":
+                  return "${restaurant.busyHours[0].sunday.toString()}";
+                  break;
+              }
+
+            })(),
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.redAccent),
+          ),
+          SizedBox(height: 5,),
+          Text(
+            'QuietHours Today',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+          ),
+          Text(
+            (() {
+              if (DateTime.parse('1969-07-20 20:18:04Z').weekday == 1) {
+                return "${restaurant.quietHours[0].monday.sublist(0).toString()}";
+              }
+              if (DateTime.parse('1969-07-20 20:18:04Z').weekday == 2) {
+                return "${restaurant.quietHours[0].tuesday.sublist(0).toString()}";
+              }
+              if (DateTime.parse('1969-07-20 20:18:04Z').weekday == 3) {
+                return "${restaurant.quietHours[0].wednesday.sublist(0).toString()}";
+              }
+              if (DateTime.parse('1969-07-20 20:18:04Z').weekday == 4) {
+                return "${restaurant.quietHours[0].thursday.sublist(0).toString()}";
+              }
+              if (DateTime.parse('1969-07-20 20:18:04Z').weekday == 5) {
+                return "${restaurant.quietHours[0].friday.sublist(0).toString()}";
+              }
+              if (DateTime.parse('1969-07-20 20:18:04Z').weekday == 6) {
+                return "${restaurant.quietHours[0].saturday.sublist(0).toString()}";
+              }
+
+              return "${restaurant.quietHours[0].sunday.sublist(0).toString()}";
+            })(),
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.green,),
+          ),
+          /*  if (DateTime.parse('1969-07-20 20:18:04Z').weekday == 1){
+               // Text('Hello'),
+               print( DateTime.parse('1969-07-20 20:18:04Z').weekday == 1 +'hello')
+                //Text('${church.busyHours[0].monday.indexOf(1).toString()}',textAlign: TextAlign.justify,),
+          } else
+          Text('Hello'), */
+
+          // _buildAboutText(),
+          // _buildLogoAttribution(),
+        ],
+      ),
+      actions: <Widget>[
+        new FlatButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          textColor: Theme.of(context).primaryColor,
+          child: const Text('Okay, got it!'),
+        ),
       ],
     );
   }
 
 
- /**  Marker gramercyMarker = Marker(
-    markerId: MarkerId(_restaurantList.restaurants[0].name),
-    position: LatLng(double.parse(_restaurantList.restaurants[0].geometry.lat), double.parse(_restaurantList.restaurants[0].geometry.lng)),
-    infoWindow: InfoWindow(title: _restaurantList.restaurants[0].formattedAddress),
-    icon: BitmapDescriptor.defaultMarkerWithHue(
-      BitmapDescriptor.hueOrange,
-    ),
-  );
-  **/
-Marker gramercyMarker = Marker(
-  markerId: MarkerId('gramercy'),
-  position: LatLng(40.738380, -73.988426),
-  infoWindow: InfoWindow(title: 'Gramercy Tavern'),
-  icon: BitmapDescriptor.defaultMarkerWithHue(
-    BitmapDescriptor.hueOrange,
-  ),
-);
-
-Marker bernardinMarker = Marker(
-  markerId: MarkerId('bernardin'),
-  position: LatLng(40.761421, -73.981667),
-  infoWindow: InfoWindow(title: 'Le Bernardin'),
-  icon: BitmapDescriptor.defaultMarkerWithHue(
-    BitmapDescriptor.hueOrange,
-  ),
-);
-Marker blueMarker = Marker(
-  markerId: MarkerId('bluehill'),
-  position: LatLng(40.732128, -73.999619),
-  infoWindow: InfoWindow(title: 'Blue Hill'),
-  icon: BitmapDescriptor.defaultMarkerWithHue(
-    BitmapDescriptor.hueOrange,
-  ),
-);
-  /**Marker bernardinMarker = Marker(
-    markerId: MarkerId(_restaurantList.restaurants[1].name),
-    position: LatLng(double.parse(_restaurantList.restaurants[1].geometry.lat), double.parse(_restaurantList.restaurants[1].geometry.lng)),
-    infoWindow: InfoWindow(title: _restaurantList.restaurants[1].formattedAddress),
-    icon: BitmapDescriptor.defaultMarkerWithHue(
-      BitmapDescriptor.hueOrange,
-    ), 
-  );
-  Marker blueMarker = Marker(
-   markerId: MarkerId(_restaurantList.restaurants[2].name),
-    position: LatLng(double.parse(_restaurantList.restaurants[2].geometry.lat), double.parse(_restaurantList.restaurants[2].geometry.lng)),
-    infoWindow: InfoWindow(title: _restaurantList.restaurants[2].formattedAddress),
-    icon: BitmapDescriptor.defaultMarkerWithHue(
-      BitmapDescriptor.hueOrange,
-    ), 
-  );
-   Marker blackMarker = Marker(
-   markerId: MarkerId(_restaurantList.restaurants[3].name),
-    position: LatLng(double.parse(_restaurantList.restaurants[3].geometry.lat), double.parse(_restaurantList.restaurants[3].geometry.lng)),
-    infoWindow: InfoWindow(title: _restaurantList.restaurants[3].formattedAddress),
-    icon: BitmapDescriptor.defaultMarkerWithHue(
-      BitmapDescriptor.hueOrange,
-    ), 
-  );
-  **/
 }

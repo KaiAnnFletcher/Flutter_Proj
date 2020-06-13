@@ -56,6 +56,8 @@ flutter:
   assets:
     - api/restaurants.json
     - api/churches.json
+    - api/stores.json
+    - api/test_centers.json
     - assets/images/coronaicon.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see

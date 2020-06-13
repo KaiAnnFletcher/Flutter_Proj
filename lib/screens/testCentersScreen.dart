@@ -1,44 +1,106 @@
 import 'dart:async';
+import 'dart:collection';
+import 'dart:convert';
 
 import 'package:Flutter_Proj/constants/constant.dart';
 import 'package:Flutter_Proj/model/indiaCases_rootnet.dart';
 import 'package:Flutter_Proj/widgets/counter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../model/test_centers.dart';
 
-class GoogleMapWidget extends StatefulWidget {
-  @override
-  GoogleMapState createState() => GoogleMapState();
-  /**const GoogleMapWidget({Key key, this.choice}) : super(key: key);
 
-  final Choice choice; */
+Future<String> _loadATestCenterAsset() async {
+  return await rootBundle.loadString('api/test_centers.json');
 }
 
-class GoogleMapState extends State<GoogleMapWidget> {
+Future<TestCenterList> loadTestCenter() async {
+  await wait(5);
+  String jsonString = await _loadATestCenterAsset();
+  final jsonResponse = json.decode(jsonString);
+  return new TestCenterList.fromJson(jsonResponse);
+}
+
+Future wait(int seconds) {
+  return new Future.delayed(Duration(seconds: seconds), () => {});
+}
+
+class TestCenterWidget extends StatefulWidget {
+  @override
+  TestCenterState createState() => TestCenterState();  
+}
+
+class TestCenterState extends State<TestCenterWidget> {
   Completer<GoogleMapController> _controller = Completer();
   Future<IndiaCasesRootNet> futureIndiaTotalCases;
+  static TestCenterList _testcenterList;
+  static Set<Marker> markerSet;
+  bool _loaded = false;
+  static var today ;
   double zoomVal = 5.0;
   @override
   void initState() {
     super.initState();
     futureIndiaTotalCases =
         fetchIndiaTotalCasesRootNet(); //fetchIndiaTotalCases();
+        loadTestCenter().then((s) => setState(() {
+          _testcenterList = s;
+          _loaded = true;
+        }));
+        if(_testcenterList == null) return ;
+        markerSet = createMarkerSetFromJsonData(_testcenterList);
+        today = findTodayWeekday();
   }
+  Set<Marker> createMarkerSetFromJsonData(TestCenterList list){
+    Set<Marker> markerSet = new HashSet<Marker>();
+    for (var i = 0; i < list.testCenters.length;i++ ){
+      markerSet.add(Marker(
+   markerId: MarkerId(_testcenterList.testCenters[i].name),
+    position: LatLng(double.parse(_testcenterList.testCenters[i].geometry.lat), double.parse(_testcenterList.testCenters[i].geometry.lng)),
+    infoWindow: InfoWindow(title: _testcenterList.testCenters[i].formattedAddress),
+    icon: BitmapDescriptor.defaultMarkerWithHue(
+      BitmapDescriptor.hueOrange,
+    ), 
+    ));
 
-  void _setMapStyle(GoogleMapController controller) async {
-    String style = await DefaultAssetBundle.of(context)
-        .loadString('assets/map_style.json');
-    controller.setMapStyle(style);
+    }
+    return markerSet;
   }
-
-   Widget _zoomminusfunction() {
+  static String findTodayWeekday(){
+    print (DateTime.parse('1969-07-20 20:18:04Z').weekday);
+         switch (DateTime.parse('1969-07-20 20:18:04Z').weekday) {
+        case 1:
+          return "Monday";
+          break;
+        case 2:
+          return "Tuesday";
+          break;
+        case 3:
+          return "Wednesday";
+          break;
+          case 4:
+          return "Thursday";
+          break;
+          case 5:
+          return "Friday";
+          break;
+          case 6:
+          return "Saturday";
+          break;
+          case 7:
+          return "Sunday";
+          break;
+      }
+  }
+  Widget _zoomminusfunction() {
 
     return Align(
       alignment: Alignment.topLeft,
       child: IconButton(
-            icon: Icon(FontAwesomeIcons.searchMinus,color:Colors.amberAccent),
+            icon: Icon(FontAwesomeIcons.searchMinus,color:Colors.orange),
             onPressed: () {
               zoomVal--;
              _minus( zoomVal);
@@ -50,7 +112,7 @@ class GoogleMapState extends State<GoogleMapWidget> {
     return Align(
       alignment: Alignment.topRight,
       child: IconButton(
-            icon: Icon(FontAwesomeIcons.searchPlus,color:Colors.amberAccent),
+            icon: Icon(FontAwesomeIcons.searchPlus,color:Colors.orange),
             onPressed: () {
               zoomVal++;
               _plus(zoomVal);
@@ -71,26 +133,13 @@ class GoogleMapState extends State<GoogleMapWidget> {
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        //_buildTopRowContainer(),
-        /* Align(
-          alignment: Alignment.topLeft,
-          child: FloatingActionButton(
-            clipBehavior: Clip.hardEdge,
-
-            child: buildBottomRowContainer(context),
-            //onPressed: buildBottomRowContainer(context),
-          ),
-        ), */
-        // buildBottomRowContainer(context),
+       
         _buildGoogleMap(context),
         _zoomminusfunction(),
           _zoomplusfunction(),
           _buildContainer(),
 
-        //SizedBox(width: 10.0,height: 300.0,
-        //child:  buildBottomRowContainer(context),),
-        //_buildContainer(),
-        //_buildRowContainer(),
+       
       ],
     );
   }
@@ -104,7 +153,7 @@ class GoogleMapState extends State<GoogleMapWidget> {
         child: GoogleMap(
           mapType: MapType.normal,
           initialCameraPosition: CameraPosition(
-            target: LatLng(40.712776, -74.005974),//LatLng(20.5937, 78.9629),
+            target: LatLng(double.parse(_testcenterList.testCenters[0].geometry.lat),double.parse(_testcenterList.testCenters[0].geometry.lng)),//(40.712776, -74.005974),//LatLng(20.5937, 78.9629),
             //target:LatLng(latlng[0],latlng[1]),
             zoom: 12,
           ),
@@ -113,7 +162,8 @@ class GoogleMapState extends State<GoogleMapWidget> {
             // _setMapStyle(controller);
           },
           //zoomControlsEnabled: false,
-          markers: {gramercyMarker, bernardinMarker, blueMarker},
+         // markers: {gramercyMarker, bernardinMarker, blueMarker},
+         markers: createMarkerSetFromJsonData(_testcenterList),
         ));
   }
 Future<void> _gotoLocation(double lat,double long) async {
@@ -121,15 +171,15 @@ Future<void> _gotoLocation(double lat,double long) async {
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(lat, long), zoom: 15,tilt: 50.0,
       bearing: 45.0,)));
   }
-  Widget _boxes(String _image, double lat,double long,String restaurantName) {
+  Widget _boxes(String _image, TestCenters testCenter){//, lat,double long,String restaurantName) {
     return  GestureDetector(
         onTap: () {
-          _gotoLocation(lat,long);
+          _gotoLocation(double.parse(testCenter.geometry.lat),double.parse(testCenter.geometry.lng));
         },
         child:Container(
               child: new FittedBox(
                 child: Material(
-                    color: Colors.white,
+                    color: Colors.red,
                     elevation: 14.0,
                     borderRadius: BorderRadius.circular(24.0),
                     shadowColor: Color(0x802196F3),
@@ -147,9 +197,11 @@ Future<void> _gotoLocation(double lat,double long) async {
                             ),
                           ),),
                           Container(
+                            width: 180,
+                          
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: myDetailsContainer1(restaurantName),
+                            child: testDetailsContainer(testCenter),
                           ),
                         ),
 
@@ -159,7 +211,7 @@ Future<void> _gotoLocation(double lat,double long) async {
             ),
     );
   }
-  @override
+  
   Widget buildBottomRowContainer(BuildContext context) {
     return FutureBuilder<IndiaCasesRootNet>(
       future: futureIndiaTotalCases,
@@ -228,54 +280,12 @@ Future<void> _gotoLocation(double lat,double long) async {
     );
   }
 
-  /* Widget _buildTopRowContainer() {
-    return Align(
-      alignment: Alignment.topCenter,
-      child: SizedBox(
-        height: 100.0,
-        child: ListView(
-          scrollDirection: Axis.horizontal,
-          children: <Widget>[
-            // buildBarItem(CupertinoIcons.news,_newsFunction),
-
-            buildBarItem(MyFlutterApp.newspaper, _newsFunction, 'News'),
-            buildBarItem(
-                MyFlutterApp.online_education, _learningFunction, 'e-Learning'),
-            //buildBarItem(CupertinoIcons.book_solid,_learningFunction),
-            //buildBarItem(MdiIcons.heart,_fitnessFunction),
-            buildBarItem(Icons.store, _storeFunction, 'Store Locator'),
-            buildBarItem(
-                MyFlutterApp.diet_1_, _fitnessFunction, 'Healthy Meals'),
-          ],
-        ),
-      ),
-    );
-  } */
-
-  Widget buildBarItem(
-      IconData iconArgument, Function functionName, String name) {
-    return Container(
-        width: 80.0,
-        margin: EdgeInsets.all(4.0),
-        color: Colors.white,
-        child: Column(children: [
-          IconButton(icon: Icon(iconArgument), onPressed: functionName),
-          Text(
-            name,
-            style: TextStyle(
-              fontSize: 10,
-              color: Colors.black45,
-            ),
-          ),
-        ])
-        //child: Icon(icon),
-
-        );
-  }
+  
   Widget _buildContainer() {
     return Align(
       alignment: Alignment.bottomLeft,
       child: Container(
+        color: Colors.red,
         margin: EdgeInsets.symmetric(vertical: 20.0),
         height: 150.0,
         child: ListView(
@@ -285,149 +295,121 @@ Future<void> _gotoLocation(double lat,double long) async {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: _boxes(
-                  "https://lh5.googleusercontent.com/p/AF1QipO3VPL9m-b355xWeg4MXmOQTauFAEkavSluTtJU=w225-h160-k-no",
-                  40.738380, -73.988426,"Gramercy Tavern"),
+                  "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSfzJq71hUyLqclpH2IpxqT12kpcxrttRi58uOCerEDtNYO6g-l&usqp=CAU",
+                  _testcenterList.testCenters[0]),//"Gramercy Tavern"),
             ),
             SizedBox(width: 10.0),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: _boxes(
-                  "https://lh5.googleusercontent.com/p/AF1QipMKRN-1zTYMUVPrH-CcKzfTo6Nai7wdL7D8PMkt=w340-h160-k-no",
-                  40.761421, -73.981667,"Le Bernardin"),
+                  "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQTvJfY7ZTGe81aoFhn7hMoctab2w_D3LY9_sjREFNdKRk1TmNr&usqp=CAU",
+                  _testcenterList.testCenters[1]),//"Gramercy Tavern"),//40.761421, -73.981667,"Le Bernardin"),
             ),
             SizedBox(width: 10.0),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: _boxes(
-                  "https://images.unsplash.com/photo-1504940892017-d23b9053d5d4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-                  40.732128, -73.999619,"Blue Hill"),
+                  "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSYEJ0O6Nsj4oH8WoRkeaypwUDLQxRrB8cNxgODJqzH886kM19D&usqp=CAU",
+                  _testcenterList.testCenters[2]),//"Gramercy Tavern"),//40.732128, -73.999619,"Blue Hill"),
             ),
+            SizedBox(width: 10.0),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: _boxes(
+                  "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQISdNTSW5DqKMncnOV73KMLcNv_BFGXqrS-m-ybGIXwPTrwHec&usqp=CAU",
+                  _testcenterList.testCenters[3]),//"Gramercy Tavern"),//40.732128, -73.999619,"Blue Hill"),
+            ),
+            
           ],
         ),
       ),
     );
   }
 
-  Widget myDetailsContainer1(String restaurantName) {
+  Widget testDetailsContainer(TestCenters testCenter) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.only(left: 8.0),
           child: Container(
-              child: Text(restaurantName,
+            
+              child: Text(testCenter.name,
+              textAlign: TextAlign.center,
+              softWrap: true,
             style: TextStyle(
-                color: Colors.red,//Color(0xff6200ee),
-                fontSize: 24.0,
+                color: Colors.black,//Color(0xff6200ee),
+                fontSize: 20.0,                
                 fontWeight: FontWeight.bold),
           )),
         ),
         SizedBox(height:5.0),
         Container(
-              child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Container(
-                  child: Text(
-                "4.1",
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 18.0,
-                ),
-              )),
-              Container(
-                child: Icon(
-                  FontAwesomeIcons.solidStar,
-                  color: Colors.amber,
-                  size: 15.0,
-                ),
-              ),
-              Container(
-                child: Icon(
-                  FontAwesomeIcons.solidStar,
-                  color: Colors.amber,
-                  size: 15.0,
-                ),
-              ),
-              Container(
-                child: Icon(
-                  FontAwesomeIcons.solidStar,
-                  color: Colors.amber,
-                  size: 15.0,
-                ),
-              ),
-              Container(
-                child: Icon(
-                  FontAwesomeIcons.solidStar,
-                  color: Colors.amber,
-                  size: 15.0,
-                ),
-              ),
-              Container(
-                child: Icon(
-                  FontAwesomeIcons.solidStarHalf,
-                  color: Colors.amber,
-                  size: 15.0,
-                ),
-              ),
-               Container(
-                  child: Text(
-                "(946)",
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 18.0,
-                ),
-              )),
-            ],
-          )),
-         /**  SizedBox(height:5.0),
-        Container(
-                  child: Text(
-                "American \u00B7 \u0024\u0024 \u00B7 1.6 mi",
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 18.0,
-                ),
-              )),
-              SizedBox(height:5.0),
-        Container(
-            child: Text(
-          "Closed \u00B7 Opens 17:00 Thu",
+           child: Text(
+          "Open Timings: ${testCenter.hoursOpen[0].monday}",
+          textAlign: TextAlign.center,
           style: TextStyle(
-              color: Colors.black54,
-              fontSize: 18.0,
-              fontWeight: FontWeight.bold),
+            color: Colors.black54,
+            fontSize: 15.0,
+            fontWeight: FontWeight.w700,
+          ),
         )),
-        **/
+        SizedBox(height: 5.0),
+        Container(
+            child: FlatButton(
+                child: Text(
+                  "Testing details",
+                  style: TextStyle(
+                      color: Colors.black87,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.underline,
+                      ),
+                ),
+                onPressed: () {
+                  showDialog(context: context,
+                  builder: (BuildContext context) => _buildHourDetailsDialog(context,testCenter));})),
+      
+              
+            ],
+         
+    );
+  }
+Widget getTextWidgets(List<String> strings)
+  {
+    List<Widget> list = new List<Widget>();
+    for(var i = 0; i < strings.length; i++){
+        list.add(new Text(strings[i]));
+    }
+    return new Column(children: list);
+  }
+Widget _buildHourDetailsDialog(BuildContext context, TestCenters testCenter)  {
+    return new AlertDialog(
+      backgroundColor: Colors.black38,
+      
+      title:  Text('Testing Details ',style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold), ),
+      content: Container(
+        height: 180,
+        child: getTextWidgets(testCenter.testingDetails)),
+      actions: <Widget>[
+        Text(
+            (() {
+             
+              return "${testCenter.testingDetails.toString()}";
+            })(),
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.green,),
+          ),
+        new FlatButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          textColor: Theme.of(context).primaryColor,
+          child: const Text('Okay, got it!'),
+        ),
       ],
     );
   }
 
-
-  Marker gramercyMarker = Marker(
-    markerId: MarkerId('gramercy'),
-    position: LatLng(40.738380, -73.988426),
-    infoWindow: InfoWindow(title: 'Total:100, deaths:20, recovered:80'),
-    icon: BitmapDescriptor.defaultMarkerWithHue(
-      BitmapDescriptor.hueYellow,
-    ),
-  );
-
-  Marker bernardinMarker = Marker(
-    markerId: MarkerId('bernardin'),
-    position: LatLng(40.761421, -73.981667),
-    infoWindow: InfoWindow(title: 'Total:100, deaths:20, recovered:80'),
-    icon: BitmapDescriptor.defaultMarkerWithHue(
-      BitmapDescriptor.hueYellow,
-    ), 
-  );
-  Marker blueMarker = Marker(
-    markerId: MarkerId('bluehill'),
-    position: LatLng(40.732128, -73.999619),
-    infoWindow: InfoWindow(
-        title: 'Total:100, deaths:20, recovered:80', snippet: 'Covid cases'),
-    icon: BitmapDescriptor.defaultMarkerWithHue(
-      BitmapDescriptor.hueYellow,
-    ), 
-  );
+ 
 }
