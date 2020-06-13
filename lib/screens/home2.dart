@@ -3,7 +3,15 @@
 // found in the LICENSE file.
 
 import 'package:Flutter_Proj/screens/restaurantsScreen.dart';
+import 'package:Flutter_Proj/screens/churchesScreen.dart';
+import 'package:Flutter_Proj/screens/storesScreen.dart';
+import 'package:Flutter_Proj/screens/testCentersScreen.dart';
 import 'package:flutter/material.dart';
+
+import 'churchesScreen.dart';
+import 'restaurantsScreen.dart';
+import 'storesScreen.dart';
+import 'testCentersScreen.dart';
 //import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class TabbedAppBarSample extends StatelessWidget {
@@ -75,21 +83,12 @@ class ChoiceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final TextStyle textStyle = Theme.of(context).textTheme.title;
-    if (choice.title.startsWith('Test')) {
-      return Card(
-        color: Colors.white,
-        child: Container(
-          child: GoogleMapWidget(),
-          //Icon(choice.icon, size: 128.0, color: textStyle.color),
-          //Text(choice.title, style: textStyle),
-        ),
-      );
-    }
+    
     if (choice.title.startsWith('Restaurent')) {
       return Card(
         color: Colors.white,
         child: Container(
-          child: GoogleMapWidget(),
+          child: RestaurantWidget(),
           //Icon(choice.icon, size: 128.0, color: textStyle.color),
           //Text(choice.title, style: textStyle),
         ),
@@ -99,7 +98,7 @@ class ChoiceCard extends StatelessWidget {
       return Card(
         color: Colors.white,
         child: Container(
-          child: GoogleMapWidget(),
+          child: StoreWidget(),
           //Icon(choice.icon, size: 128.0, color: textStyle.color),
           //Text(choice.title, style: textStyle),
         ),
@@ -109,22 +108,22 @@ class ChoiceCard extends StatelessWidget {
       return Card(
         color: Colors.white,
         child: Container(
-          child: GoogleMapWidget(),
+          child: ChurchWidget(),
           //Icon(choice.icon, size: 128.0, color: textStyle.color),
           //Text(choice.title, style: textStyle),
         ),
       );
     }
-    if (choice.title.startsWith('Test')) {
+    else
       return Card(
         color: Colors.white,
         child: Container(
-          child: GoogleMapWidget(),
+          child: TestCenterWidget(),
           //Icon(choice.icon, size: 128.0, color: textStyle.color),
           //Text(choice.title, style: textStyle),
         ),
       );
-    }
+    
 
   }
 }
