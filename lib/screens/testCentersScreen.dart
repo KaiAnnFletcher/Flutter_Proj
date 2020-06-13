@@ -21,6 +21,7 @@ Future<TestCenterList> loadTestCenter() async {
   await wait(5);
   String jsonString = await _loadATestCenterAsset();
   final jsonResponse = json.decode(jsonString);
+  
   return new TestCenterList.fromJson(jsonResponse);
 }
 
@@ -50,12 +51,13 @@ class TestCenterState extends State<TestCenterWidget> {
           _testcenterList = s;
           _loaded = true;
         }));
-        if(_testcenterList == null) return ;
+        //if(_testcenterList == null) return ;
         markerSet = createMarkerSetFromJsonData(_testcenterList);
         today = findTodayWeekday();
   }
   Set<Marker> createMarkerSetFromJsonData(TestCenterList list){
     Set<Marker> markerSet = new HashSet<Marker>();
+    if (list == null) return markerSet;
     for (var i = 0; i < list.testCenters.length;i++ ){
       markerSet.add(Marker(
    markerId: MarkerId(_testcenterList.testCenters[i].name),
@@ -70,8 +72,8 @@ class TestCenterState extends State<TestCenterWidget> {
     return markerSet;
   }
   static String findTodayWeekday(){
-    print (DateTime.parse('1969-07-20 20:18:04Z').weekday);
-         switch (DateTime.parse('1969-07-20 20:18:04Z').weekday) {
+    //print (DateTime.now().weekday);
+         switch (DateTime.now().weekday) {
         case 1:
           return "Monday";
           break;
@@ -131,6 +133,16 @@ class TestCenterState extends State<TestCenterWidget> {
 
   @override
   Widget build(BuildContext context) {
+     if(_testcenterList == null) {
+      return SizedBox(
+                child: CircularProgressIndicator(
+                  backgroundColor: Colors.black,
+                  strokeWidth: 10,
+                ),
+                height: 50.0,
+                width: 50.0,
+              );
+    } else
     return Stack(
       children: <Widget>[
        
@@ -161,7 +173,7 @@ class TestCenterState extends State<TestCenterWidget> {
             _controller.complete(controller);
             // _setMapStyle(controller);
           },
-          //zoomControlsEnabled: false,
+          zoomControlsEnabled: false,
          // markers: {gramercyMarker, bernardinMarker, blueMarker},
          markers: createMarkerSetFromJsonData(_testcenterList),
         ));
@@ -285,7 +297,7 @@ Future<void> _gotoLocation(double lat,double long) async {
     return Align(
       alignment: Alignment.bottomLeft,
       child: Container(
-        color: Colors.red,
+        //color: Colors.red,
         margin: EdgeInsets.symmetric(vertical: 20.0),
         height: 150.0,
         child: ListView(
@@ -384,22 +396,28 @@ Widget getTextWidgets(List<String> strings)
     return new Column(children: list);
   }
 Widget _buildHourDetailsDialog(BuildContext context, TestCenters testCenter)  {
+  if(testCenter == null){
+    return CircularProgressIndicator();
+  }else
     return new AlertDialog(
       backgroundColor: Colors.black38,
       
-      title:  Text('Testing Details ',style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold), ),
+      title:  Text('Testing Details ', textAlign :TextAlign.center,style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold), ),
       content: Container(
         height: 180,
-        child: getTextWidgets(testCenter.testingDetails)),
-      actions: <Widget>[
-        Text(
+        //child: getTextWidgets(testCenter.testingDetails),
+         child: Text(
             (() {
-             
+             if(testCenter.testingDetails != null)
               return "${testCenter.testingDetails.toString()}";
+              else
+              return "";
             })(),
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.green,),
-          ),
+          ), ),
+      actions: <Widget>[
+        
         new FlatButton(
           onPressed: () {
             Navigator.of(context).pop();
