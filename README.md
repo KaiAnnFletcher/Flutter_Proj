@@ -13,24 +13,24 @@ Our app provides users with the information they need to plan their trips accord
 
 These are the location categories we are reporting busy/quiet times for. Each location category has 4 unique locations which are pinned on the map (hard-coded data from the JSON API):
 
-![church img here] (/images/church.png)
+![church img here] (Safe-Zone/assets/images/church.png)
 Format: ![Alt Text](url)
 
-![restaurant img here] (/images/restaurant.png)
+![restaurant img here] (Safe-Zone/assets/images/restaurant.png)
 Format: ![Alt Text](url)
 
-![store img here] (/images/store.png)
+![store img here] (Safe-Zone/assets/images/store.png)
 Format: ![Alt Text](url)
 
-![test center img here] (/images/testCenter.png)
+![test center img here] (Safe-Zone/assets/images/testCenter.png)
 Format: ![Alt Text](url)
 
 Details regarding busy/quiet hours pops up as a modal. For test centers, the details are different.
 
-![timings img here] (/images/timings.png)
+![timings img here] (Safe-Zone/assets/images/timings.png)
 Format: ![Alt Text](url)
 
-![Testing details here] (/images/Testingdetails.png)
+![Testing details here] (Safe-Zone/assets/images/Testingdetails.png)
 Format: ![Alt Text](url)
 
 ##Technology, Tools and Architecture
