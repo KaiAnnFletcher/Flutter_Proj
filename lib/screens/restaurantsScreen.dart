@@ -201,7 +201,7 @@ Future<void> _gotoLocation(double lat,double long) async {
          hourStatus ="Busy Hour";
          customColor = Colors.red;
       }  else {
-        hourStatus ="Queit Hour";
+        hourStatus ="Quiet Hour";
          customColor = Colors.green;
       }
       //logger.i("Custom color " + customColor.toString() +"CurrentHour = "+ currentHour.toString() + "hourStatus " + hourStatus + "today = " + today);
