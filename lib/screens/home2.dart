@@ -7,6 +7,7 @@ import 'package:Flutter_Proj/screens/churchesScreen.dart';
 import 'package:Flutter_Proj/screens/storesScreen.dart';
 import 'package:Flutter_Proj/screens/testCentersScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'churchesScreen.dart';
 import 'restaurantsScreen.dart';
@@ -24,7 +25,7 @@ class TabbedAppBarSample extends StatelessWidget {
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(100.0),
             child: AppBar(
-              leading: Image.asset('assets/images/coronaicon.jpg'),
+              leading: Image.asset('assets/images/Safe_Zone_logo.png'),//Image.asset('assets/images/coronaicon.jpg'),
               title: const Text('Safe Zone',
                   style: TextStyle(color: Colors.amber),
                   textAlign: TextAlign.center),
@@ -67,10 +68,10 @@ class Choice {
 }
 
 const List<Choice> choices = const <Choice>[
-  const Choice(title: 'Test center', icon: Icons.fitness_center),
+  const Choice(title: 'Test center', icon: FontAwesomeIcons.solidHospital),
   const Choice(title: 'Restaurent', icon: Icons.restaurant),
-  const Choice(title: 'Store', icon: Icons.store),
-  const Choice(title: 'Church', icon: Icons.home),
+  const Choice(title: 'Store', icon: FontAwesomeIcons.store),
+  const Choice(title: 'Church', icon: FontAwesomeIcons.church),
   //const Choice(title: 'TRAIN', icon: Icons.directions_railway),
   //const Choice(title: 'WALK', icon: Icons.directions_walk),
 ];
