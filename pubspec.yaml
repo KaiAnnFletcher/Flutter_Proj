@@ -60,6 +60,7 @@ flutter:
     - api/stores.json
     - api/test_centers.json
     - assets/images/coronaicon.jpg
+    - assets/images/Safe_Zone_logo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
