@@ -50,5 +50,3 @@ class SafeZone extends StatelessWidget {
     );
   }
 }
-
-
