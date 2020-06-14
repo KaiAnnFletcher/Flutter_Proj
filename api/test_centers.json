@@ -17,8 +17,8 @@
             "Sunday": ["24 hours"]
         }],
     
-        "testing-details": ["Appointement required",
-        "Pysician Order Required", 
+        "testing-details": ["Appointment required",
+        "Physician Order Required", 
         "Screening required", 
         "Restrictions Apply"],
         

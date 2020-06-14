@@ -11,6 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:Flutter_Proj/model/restaurants.dart';
+import 'package:logger/logger.dart';
 
 Future<String> _loadARestauranttAsset() async {
   return await rootBundle.loadString('api/restaurants.json');
@@ -43,7 +44,9 @@ class RestaurantState extends State<RestaurantWidget> {
   bool _loaded = false;
   double zoomVal = 5.0;
   static var today;
-  static var now = DateTime.parse("1969-07-20 20:18:04Z");  
+  //static var now = DateTime.parse("1969-07-20 20:18:04Z");  
+  var logger = Logger();
+  
   @override
   void initState() {
     super.initState();
@@ -56,6 +59,7 @@ class RestaurantState extends State<RestaurantWidget> {
         if(_restaurantList == null) return ;
         markerSet = createMarkerSetFromJsonData(_restaurantList);
         today = findTodayWeekday();
+        
   }
    static String findTodayWeekday(){
     print (DateTime.parse('1969-07-20 20:18:04Z').weekday);
@@ -85,6 +89,7 @@ class RestaurantState extends State<RestaurantWidget> {
   }
   Set<Marker> createMarkerSetFromJsonData(RestaurantList list){
     Set<Marker> markerSet = new HashSet<Marker>();
+    if (list == null) return markerSet;
     for (var i = 0; i < list.restaurants.length;i++ ){
       markerSet.add(Marker(
    markerId: MarkerId(_restaurantList.restaurants[i].name),
@@ -134,6 +139,19 @@ class RestaurantState extends State<RestaurantWidget> {
 
   @override
   Widget build(BuildContext context) {
+    
+    //logger.i("now = "+now.toString());
+            logger.i( " datetime now = "+ DateTime.now().toString());
+    if(_restaurantList == null) {
+      return SizedBox(
+                child: CircularProgressIndicator(
+                  backgroundColor: Colors.green,
+                  strokeWidth: 10,
+                ),
+                height: 10.0,
+                width: 10.0,
+              );
+    } else
     return Stack(
       children: <Widget>[
         
@@ -147,6 +165,7 @@ class RestaurantState extends State<RestaurantWidget> {
   }
 
   Widget _buildGoogleMap(BuildContext context) {
+    
     return Container(
         height: 420,
         // height:MediaQuery.of(context).size.height ,
@@ -163,7 +182,7 @@ class RestaurantState extends State<RestaurantWidget> {
             _controller.complete(controller);
             // _setMapStyle(controller);
           },
-          //zoomControlsEnabled: false,
+          zoomControlsEnabled: false,
          // markers: {gramercyMarker, bernardinMarker, blueMarker},
          markers: createMarkerSetFromJsonData(_restaurantList),
         ));
@@ -173,7 +192,19 @@ Future<void> _gotoLocation(double lat,double long) async {
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(lat, long), zoom: 15,tilt: 50.0,
       bearing: 45.0,)));
   }
-  Widget _boxes(String _image, Restaurant restaurant){//, lat,double long,String restaurantName) {
+  Widget _boxes(String _image, Restaurant restaurant){
+    var currentHour = DateTime.now().hour;
+      Color customColor = Colors.red;
+      String hourStatus = "Busy Hour";
+      
+       if(restaurant.busyHours.contains(currentHour)){
+         hourStatus ="Busy Hour";
+         customColor = Colors.red;
+      }  else {
+        hourStatus ="Quiet Hour";
+         customColor = Colors.green;
+      }
+      //logger.i("Custom color " + customColor.toString() +"CurrentHour = "+ currentHour.toString() + "hourStatus " + hourStatus + "today = " + today);
     return  GestureDetector(
         onTap: () {
           _gotoLocation(double.parse(restaurant.geometry.lat),double.parse(restaurant.geometry.lng));
@@ -183,7 +214,7 @@ Future<void> _gotoLocation(double lat,double long) async {
               child: new FittedBox(
                 
                 child: Material(
-                    color: Colors.red,
+                    color: customColor,
                     elevation: 14.0,
                     borderRadius: BorderRadius.circular(24.0),
                     shadowColor: Color(0x802196F3),
@@ -205,7 +236,7 @@ Future<void> _gotoLocation(double lat,double long) async {
                             width: 200,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: restaurantDetailsContainer(restaurant),
+                            child: restaurantDetailsContainer(restaurant,hourStatus),
                           ),
                         ),
 
@@ -254,7 +285,7 @@ Future<void> _gotoLocation(double lat,double long) async {
     return Align(
       alignment: Alignment.bottomLeft,
       child: Container(
-        color:Colors.red,
+        //color:Colors.red,
         margin: EdgeInsets.symmetric(vertical: 20.0),
         height: 150.0,
         child: ListView(
@@ -295,7 +326,7 @@ Future<void> _gotoLocation(double lat,double long) async {
     );
   }
 
-  Widget restaurantDetailsContainer(Restaurant restaurant) {
+  Widget restaurantDetailsContainer(Restaurant restaurant,String hourStatus) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
@@ -315,7 +346,7 @@ Future<void> _gotoLocation(double lat,double long) async {
         Container(
           child:  Row(
             children: <Widget>[
-              Text('Delivery:',
+              Text('Delivery: ',
                  style: TextStyle(
                   color: Colors.black,
                   fontSize: 15.0,
@@ -350,6 +381,7 @@ Future<void> _gotoLocation(double lat,double long) async {
         Container(
                   child: Text(
                 "Open Timings: ${restaurant.hoursOpen[0].monday}",
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.black54,
                   fontSize: 15.0,
@@ -359,7 +391,7 @@ Future<void> _gotoLocation(double lat,double long) async {
               SizedBox(height:5.0),
         Container(
             child: Text(
-          "Busy Hour",
+          hourStatus,
           style: TextStyle(
               color: Colors.black,
               fontSize: 18.0,
@@ -386,6 +418,9 @@ Future<void> _gotoLocation(double lat,double long) async {
     );
   }
   Widget _buildHourDetailsDialog(BuildContext context, Restaurant restaurant)  {
+    if(restaurant == null){
+      return CircularProgressIndicator();
+    } else 
     return new AlertDialog(
       backgroundColor: Colors.black38,
       
@@ -424,6 +459,8 @@ Future<void> _gotoLocation(double lat,double long) async {
                   case "Sunday":
                   return "${restaurant.busyHours[0].sunday.toString()}";
                   break;
+                  default: "";
+                  break;
               }
 
             })(),
@@ -438,26 +475,30 @@ Future<void> _gotoLocation(double lat,double long) async {
           ),
           Text(
             (() {
-              if (DateTime.parse('1969-07-20 20:18:04Z').weekday == 1) {
+              if (DateTime.now().weekday == 1) {
                 return "${restaurant.quietHours[0].monday.sublist(0).toString()}";
               }
-              if (DateTime.parse('1969-07-20 20:18:04Z').weekday == 2) {
+              if (DateTime.now().weekday == 2) {
                 return "${restaurant.quietHours[0].tuesday.sublist(0).toString()}";
               }
-              if (DateTime.parse('1969-07-20 20:18:04Z').weekday == 3) {
+              if (DateTime.now().weekday == 3) {
                 return "${restaurant.quietHours[0].wednesday.sublist(0).toString()}";
               }
-              if (DateTime.parse('1969-07-20 20:18:04Z').weekday == 4) {
+              if (DateTime.now().weekday == 4) {
                 return "${restaurant.quietHours[0].thursday.sublist(0).toString()}";
               }
-              if (DateTime.parse('1969-07-20 20:18:04Z').weekday == 5) {
+              if (DateTime.now().weekday == 5) {
                 return "${restaurant.quietHours[0].friday.sublist(0).toString()}";
               }
-              if (DateTime.parse('1969-07-20 20:18:04Z').weekday == 6) {
+              if (DateTime.now().weekday == 6) {
                 return "${restaurant.quietHours[0].saturday.sublist(0).toString()}";
               }
-
-              return "${restaurant.quietHours[0].sunday.sublist(0).toString()}";
+              if (DateTime.now().weekday == 7) {
+                return "${restaurant.quietHours[0].saturday.sublist(0).toString()}";
+              }
+              else
+              return "";
+              
             })(),
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.green,),

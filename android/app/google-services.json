@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "824798420104",
+    "firebase_url": "https://safe-zone-e3d77.firebaseio.com",
+    "project_id": "safe-zone-e3d77",
+    "storage_bucket": "safe-zone-e3d77.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:824798420104:android:287126ad4c5f71d1ae133d",
+        "android_client_info": {
+          "package_name": "com.example.Flutter_Proj"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "824798420104-tb5ruebh5hkoeg3srh9rhe4bepg72j8b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCguOkhDqLl7lzCDTGShXLqGUCERRV3db8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "824798420104-tb5ruebh5hkoeg3srh9rhe4bepg72j8b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

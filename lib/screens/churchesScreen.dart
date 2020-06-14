@@ -3,7 +3,6 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:Flutter_Proj/constants/constant.dart';
-import 'package:Flutter_Proj/model/busyHours.dart';
 import 'package:Flutter_Proj/model/indiaCases_rootnet.dart';
 import 'package:Flutter_Proj/widgets/counter.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,6 +12,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:Flutter_Proj/model/churches.dart';
 import '../model/churches.dart';
+
 
 Future<String> _loadAChurchAsset() async {
   return await rootBundle.loadString('api/churches.json');
@@ -32,10 +32,7 @@ Future wait(int seconds) {
 class ChurchWidget extends StatefulWidget {
   @override
   ChurchState createState() => ChurchState();
-  /**const GoogleMapWidget({Key key, this.choice}) : super(key: key);
-
-  final Choice choice; */
-}
+ }
 
 class ChurchState extends State<ChurchWidget> {
   Completer<GoogleMapController> _controller = Completer();
@@ -43,8 +40,7 @@ class ChurchState extends State<ChurchWidget> {
   static ChurchList _churchList;
   static Set<Marker> markerSet;
   bool _loaded = false;
-  //static var currentHourStatus;
-  static var map = new HashMap();
+  //static var map = new HashMap();
   static var today;
   double zoomVal = 5.0;
   @override
@@ -60,12 +56,12 @@ class ChurchState extends State<ChurchWidget> {
     if(_loaded = true){
     markerSet = createMarkerSetFromJsonData(_churchList);
     today = findTodayWeekday();
-    findCurrentHourStatus();
+   // findCurrentHourStatus();
     }
   }
-  void findCurrentHourStatus(){
+  /* void findCurrentHourStatus(){
     var currentHour = DateTime.parse('1969-07-20 20:18:04Z').hour;
-    //var currentHourStatus = "Busy Hour";    
+     
     for (var i =0; i< _churchList.churches.length;i++){
       if(!_churchList.churches[i].busyHours.contains(currentHour)){
          var currentHourStatus ="Quiet Hour";
@@ -74,7 +70,7 @@ class ChurchState extends State<ChurchWidget> {
      
     }
 
-  }
+  } */
   static String findTodayWeekday(){
     
          switch (DateTime.parse('1969-07-20 20:18:04Z').weekday) {
@@ -104,6 +100,7 @@ class ChurchState extends State<ChurchWidget> {
 
   Set<Marker> createMarkerSetFromJsonData(ChurchList list) {
     Set<Marker> markerSet = new HashSet<Marker>();
+    if (list == null) return markerSet;
     for (var i = 0; i < list.churches.length; i++) {
       markerSet.add(Marker(
         markerId: MarkerId(_churchList.churches[i].name),
@@ -156,6 +153,19 @@ class ChurchState extends State<ChurchWidget> {
 
   @override
   Widget build(BuildContext context) {
+     if(_churchList == null) {
+      return SizedBox(
+                child: CircularProgressIndicator(
+                  backgroundColor: Colors.red,
+                  strokeWidth: 10,
+                  value: 8.0,
+                  
+                ),
+                height: 5.0,
+                width: 5.0,
+                
+              );
+    } else
     return Stack(
       children: <Widget>[
      
@@ -188,7 +198,7 @@ class ChurchState extends State<ChurchWidget> {
             _controller.complete(controller);
             // _setMapStyle(controller);
           },
-          //zoomControlsEnabled: false,
+          zoomControlsEnabled: false,
           // markers: {gramercyMarker, bernardinMarker, blueMarker},
           markers: createMarkerSetFromJsonData(_churchList),
         ));
@@ -206,7 +216,7 @@ class ChurchState extends State<ChurchWidget> {
 
   Widget _boxes(String _image, Churches church) {
     //, lat,double long,String restaurantName) {
-      var currentHour= DateTime.parse("1969-07-20 20:18:04Z");
+      var currentHour= DateTime.now().hour;
       Color customColor = Colors.red;
       String hourStatus = "Busy Hour";
       /* if(map.containsKey(church.name)) {
@@ -217,7 +227,7 @@ class ChurchState extends State<ChurchWidget> {
          hourStatus ="Busy Hour";
          customColor = Colors.red;
       }  else {
-        hourStatus ="Queit Hour";
+        hourStatus ="Quiet Hour";
          customColor = Colors.green;
       }
     return GestureDetector(
@@ -251,7 +261,7 @@ class ChurchState extends State<ChurchWidget> {
                     width: 180,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: churchDetailsContainer(church, Colors.black, hourStatus),
+                      child: churchDetailsContainer(church, hourStatus),
                     ),
                   ),
                 ],
@@ -344,7 +354,7 @@ class ChurchState extends State<ChurchWidget> {
               padding: const EdgeInsets.all(8.0),
               child: _boxes(
                   "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRgrvsMmU-dg8BWDnJkZW4n-AnboZoXzSVdqYXBahcvCfFk1EVG&usqp=CAU",
-                  _churchList.churches[0]), //"Gramercy Tavern"),
+                  _churchList.churches[0]),
             ),
             SizedBox(width: 10.0),
             Padding(
@@ -352,7 +362,7 @@ class ChurchState extends State<ChurchWidget> {
               child: _boxes(
                   "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTS7rMcoorM8i0p-B0MbuIQzXoUHFbpldzyAc8UkqMQYLffqI55&usqp=CAU",
                   _churchList.churches[
-                      1]), //"Gramercy Tavern"),//40.761421, -73.981667,"Le Bernardin"),
+                      1]), 
             ),
             SizedBox(width: 10.0),
             Padding(
@@ -360,7 +370,7 @@ class ChurchState extends State<ChurchWidget> {
               child: _boxes(
                   "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTQ6YBA6RC0P3tjxUDd2yIAEUIom3NW53QYgK4H8OStnoosEfL1&usqp=CAU",
                   _churchList.churches[
-                      2]), //"Gramercy Tavern"),//40.732128, -73.999619,"Blue Hill"),
+                      2]), 
             ),
             SizedBox(width: 10.0),
             Padding(
@@ -368,7 +378,7 @@ class ChurchState extends State<ChurchWidget> {
               child: _boxes(
                   "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSbZEHqMgEkHlcgx7pT1wM_6D8uICKRb2c5WIidLu2FDWjvNE3C&usqp=CAU",
                   _churchList.churches[
-                      3]), //"Gramercy Tavern"),//40.732128, -73.999619,"Blue Hill"),
+                      3]), 
             ),
           ],
         ),
@@ -376,7 +386,7 @@ class ChurchState extends State<ChurchWidget> {
     );
   }
 
-  Widget churchDetailsContainer(Churches church, Color customColor,String hourStatus) {
+  Widget churchDetailsContainer(Churches church, String hourStatus) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
@@ -388,7 +398,7 @@ class ChurchState extends State<ChurchWidget> {
                 church.name,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: customColor, //Colors.red,//Color(0xff6200ee),
+                    color: Colors.black, //Colors.red,//Color(0xff6200ee),
                     fontSize: 24.0,
                     fontWeight: FontWeight.bold),
               )),
@@ -433,6 +443,9 @@ class ChurchState extends State<ChurchWidget> {
   }
 
   Widget _buildHourDetailsDialog(BuildContext context, Churches church)  {
+    if(church == null){
+    return CircularProgressIndicator();
+  }else
     return new AlertDialog(
       backgroundColor: Colors.black38,
       
@@ -471,6 +484,8 @@ class ChurchState extends State<ChurchWidget> {
                   case "Sunday":
                   return "${church.busyHours[0].sunday.sublist(0).toString()}";
                   break;
+                  default: "";
+                  break;
               }
 
             })(),
@@ -485,26 +500,30 @@ class ChurchState extends State<ChurchWidget> {
           ),
           Text(
             (() {
-              if (DateTime.parse('1969-07-20 20:18:04Z').weekday == 1) {
+              if (DateTime.now().weekday == 1) {
                 return "${church.quietHours[0].monday.sublist(0).toString()}";
               }
-              if (DateTime.parse('1969-07-20 20:18:04Z').weekday == 2) {
+              if (DateTime.now().weekday == 2) {
                 return "${church.quietHours[0].tuesday.sublist(0).toString()}";
               }
-              if (DateTime.parse('1969-07-20 20:18:04Z').weekday == 3) {
+              if (DateTime.now().weekday == 3) {
                 return "${church.quietHours[0].wednesday.sublist(0).toString()}";
               }
-              if (DateTime.parse('1969-07-20 20:18:04Z').weekday == 4) {
+              if (DateTime.now().weekday == 4) {
                 return "${church.quietHours[0].thursday.sublist(0).toString()}";
               }
-              if (DateTime.parse('1969-07-20 20:18:04Z').weekday == 5) {
+              if (DateTime.now().weekday == 5) {
                 return "${church.quietHours[0].friday.sublist(0).toString()}";
               }
-              if (DateTime.parse('1969-07-20 20:18:04Z').weekday == 6) {
+              if (DateTime.now().weekday == 6) {
                 return "${church.quietHours[0].saturday.sublist(0).toString()}";
               }
-
-              return "${church.quietHours[0].sunday.sublist(0).toString()}";
+              if (DateTime.now().weekday == 7) {
+                return "${church.quietHours[0].saturday.sublist(0).toString()}";
+              }
+              else
+              return "";
+              
             })(),
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.green,),
@@ -532,3 +551,17 @@ class ChurchState extends State<ChurchWidget> {
     );
   }
 }
+/* class AlertDialogScreen extends StatefulWidget {
+  @override
+  AlertDialogScreenState createState() => AlertDialogScreenState();
+}
+
+class AlertDialogScreenState extends State<AlertDialogScreen> {
+  Churches church = null;
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return null;
+  }
+}
+ */
