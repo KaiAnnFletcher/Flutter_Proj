@@ -69,7 +69,7 @@ class Choice {
 
 const List<Choice> choices = const <Choice>[
   const Choice(title: 'Test center', icon: FontAwesomeIcons.solidHospital),
-  const Choice(title: 'Restaurent', icon: Icons.restaurant),
+  const Choice(title: 'Restaurant', icon: Icons.restaurant),
   const Choice(title: 'Store', icon: FontAwesomeIcons.store),
   const Choice(title: 'Church', icon: FontAwesomeIcons.church),
   //const Choice(title: 'TRAIN', icon: Icons.directions_railway),
