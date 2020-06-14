@@ -12,7 +12,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:Flutter_Proj/model/churches.dart';
 import '../model/churches.dart';
-import '../model/churches.dart';
+
 
 Future<String> _loadAChurchAsset() async {
   return await rootBundle.loadString('api/churches.json');
@@ -227,7 +227,7 @@ class ChurchState extends State<ChurchWidget> {
          hourStatus ="Busy Hour";
          customColor = Colors.red;
       }  else {
-        hourStatus ="Queit Hour";
+        hourStatus ="Quiet Hour";
          customColor = Colors.green;
       }
     return GestureDetector(

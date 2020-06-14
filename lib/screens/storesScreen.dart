@@ -206,7 +206,7 @@ class StoreState extends State<StoreWidget> {
          hourStatus ="Busy Hour";
          customColor = Colors.red;
       }  else {
-        hourStatus ="Queit Hour";
+        hourStatus ="Quiet Hour";
          customColor = Colors.green;
       }
     return GestureDetector(
