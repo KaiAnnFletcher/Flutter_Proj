@@ -73,7 +73,7 @@ class ChurchState extends State<ChurchWidget> {
   } */
   static String findTodayWeekday(){
     
-         switch (DateTime.parse('1969-07-20 20:18:04Z').weekday) {
+         switch (DateTime.now().weekday) {
         case 1:
           return "Monday";
           break;
@@ -213,22 +213,75 @@ class ChurchState extends State<ChurchWidget> {
       bearing: 45.0,
     )));
   }
+String getHourStatus (Churches church) {
+      var currentHour = DateTime.now().hour;
+    
+    switch (today) {
+                case "Monday": if(church.busyHours[0].monday.contains(currentHour))
+                  return "Busy Hour";
+                  else
+                  return "Quiet Hour";
+                  break;
+                case "Tuesday":
+                  if(church.busyHours[0].tuesday.contains(currentHour)){
+                  return "Busy Hour";
+                  }
+                  else{
+                  return "Quiet Hour";
+                      }
+                  break;
+                  case "Wednesday":
+                  if(church.busyHours[0].wednesday.contains(currentHour)){
+                  return "Busy Hour";
+                  }
+                  else{
+                  return "Quiet Hour";
+                      }
+                  break;
+                  case "Thursday":
+                  if(church.busyHours[0].thursday.contains(currentHour)){
+                  return "Busy Hour";
+                  }
+                  else{
+                  return "Quiet Hour";
+                      }
+                  break;
+                  case "Friday":
+                  if(church.busyHours[0].friday.contains(currentHour)){
+                  return "Busy Hour";
+                  }
+                  else{
+                  return "Quiet Hour";
+                      }
+                  break;
+                  case "Saturday":
+                  if(church.busyHours[0].saturday.contains(currentHour)){
+                  return "Busy Hour";
+                  }
+                  else{
+                  return "Quiet Hour";
+                      }
+                  break;
+                  case "Sunday":
+                  if(church.busyHours[0].sunday.contains(currentHour)){
+                  return "Busy Hour";
+                  }
+                  else{
+                  return "Quiet Hour";
+                      }
+                  break;
+                  default: "";
+                  break;
 
+  }
+  }
   Widget _boxes(String _image, Churches church) {
-    //, lat,double long,String restaurantName) {
-      var currentHour= DateTime.now().hour;
-      Color customColor = Colors.red;
-      String hourStatus = "Busy Hour";
-      /* if(map.containsKey(church.name)) {
-          customColor = Colors.green;
-          hourStatus = "Quiet Hour";
-      } */
-       if(church.busyHours.contains(currentHour)){
-         hourStatus ="Busy Hour";
-         customColor = Colors.red;
-      }  else {
-        hourStatus ="Quiet Hour";
-         customColor = Colors.green;
+    Color customColor = Colors.red;
+      String hourStatus = getHourStatus(church);
+      if(hourStatus == "Quiet Hour"){
+        customColor = Colors.green;
+      } else {
+        customColor = Colors.red;
       }
     return GestureDetector(
       onTap: () {
@@ -429,7 +482,7 @@ class ChurchState extends State<ChurchWidget> {
                 child: Text(
                   "Timing details",
                   style: TextStyle(
-                      color: Colors.black87,
+                      color: Colors.deepPurple,
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,
                       decoration: TextDecoration.underline,
@@ -519,7 +572,7 @@ class ChurchState extends State<ChurchWidget> {
                 return "${church.quietHours[0].saturday.sublist(0).toString()}";
               }
               if (DateTime.now().weekday == 7) {
-                return "${church.quietHours[0].saturday.sublist(0).toString()}";
+                return "${church.quietHours[0].sunday.sublist(0).toString()}";
               }
               else
               return "";
