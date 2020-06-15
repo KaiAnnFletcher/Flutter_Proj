@@ -13,6 +13,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:Flutter_Proj/model/restaurants.dart';
 import 'package:logger/logger.dart';
 
+import '../model/restaurants.dart';
+
 Future<String> _loadARestauranttAsset() async {
   return await rootBundle.loadString('api/restaurants.json');
 }
@@ -62,8 +64,8 @@ class RestaurantState extends State<RestaurantWidget> {
         
   }
    static String findTodayWeekday(){
-    print (DateTime.parse('1969-07-20 20:18:04Z').weekday);
-         switch (DateTime.parse('1969-07-20 20:18:04Z').weekday) {
+    //print (DateTime.parse('1969-07-20 20:18:04Z').weekday);
+         switch (DateTime.now().weekday) {
         case 1:
           return "Monday";
           break;
@@ -192,17 +194,76 @@ Future<void> _gotoLocation(double lat,double long) async {
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(lat, long), zoom: 15,tilt: 50.0,
       bearing: 45.0,)));
   }
+
+  String getHourStatus (Restaurant restautant) {
+      var currentHour = DateTime.now().hour;
+    
+    switch (today) {
+                case "Monday": if(restautant.busyHours[0].monday.contains(currentHour))
+                  return "Busy Hour";
+                  else
+                  return "Quiet Hour";
+                  break;
+                case "Tuesday":
+                  if(restautant.busyHours[0].tuesday.contains(currentHour)){
+                  return "Busy Hour";
+                  }
+                  else{
+                  return "Quiet Hour";
+                      }
+                  break;
+                  case "Wednesday":
+                  if(restautant.busyHours[0].wednesday.contains(currentHour)){
+                  return "Busy Hour";
+                  }
+                  else{
+                  return "Quiet Hour";
+                      }
+                  break;
+                  case "Thursday":
+                  if(restautant.busyHours[0].thursday.contains(currentHour)){
+                  return "Busy Hour";
+                  }
+                  else{
+                  return "Quiet Hour";
+                      }
+                  break;
+                  case "Friday":
+                  if(restautant.busyHours[0].friday.contains(currentHour)){
+                  return "Busy Hour";
+                  }
+                  else{
+                  return "Quiet Hour";
+                      }
+                  break;
+                  case "Saturday":
+                  if(restautant.busyHours[0].saturday.contains(currentHour)){
+                  return "Busy Hour";
+                  }
+                  else{
+                  return "Quiet Hour";
+                      }
+                  break;
+                  case "Sunday":
+                  if(restautant.busyHours[0].sunday.contains(currentHour)){
+                  return "Busy Hour";
+                  }
+                  else{
+                  return "Quiet Hour";
+                      }
+                  break;
+                  default: "";
+                  break;
+
+  }
+  }
   Widget _boxes(String _image, Restaurant restaurant){
-    var currentHour = DateTime.now().hour;
-      Color customColor = Colors.red;
-      String hourStatus = "Busy Hour";
-      
-       if(restaurant.busyHours.contains(currentHour)){
-         hourStatus ="Busy Hour";
-         customColor = Colors.red;
-      }  else {
-        hourStatus ="Quiet Hour";
-         customColor = Colors.green;
+   Color customColor = Colors.red;
+      String hourStatus = getHourStatus(restaurant);
+      if(hourStatus == "Quiet Hour"){
+        customColor = Colors.green;
+      } else {
+        customColor = Colors.red;
       }
       //logger.i("Custom color " + customColor.toString() +"CurrentHour = "+ currentHour.toString() + "hourStatus " + hourStatus + "today = " + today);
     return  GestureDetector(
@@ -233,7 +294,7 @@ Future<void> _gotoLocation(double lat,double long) async {
                           ),),
                           Container(
                            // color: Colors.green,
-                            width: 200,
+                            width: 210,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: restaurantDetailsContainer(restaurant,hourStatus),
@@ -404,7 +465,7 @@ Future<void> _gotoLocation(double lat,double long) async {
                 child: Text(
                   "Timing details",
                   style: TextStyle(
-                      color: Colors.black87,
+                      color: Colors.deepPurple,
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,
                       decoration: TextDecoration.underline,
