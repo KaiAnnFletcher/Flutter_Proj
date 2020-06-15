@@ -46,8 +46,8 @@ class ChurchState extends State<ChurchWidget> {
   @override
   void initState() {
     super.initState();
-    futureIndiaTotalCases =
-        fetchIndiaTotalCasesRootNet(); //fetchIndiaTotalCases();
+    //futureIndiaTotalCases =        fetchIndiaTotalCasesRootNet(); //fetchIndiaTotalCases();
+        if(mounted) {
     loadChurch().then((s) => setState(() {
           _churchList = s;
           _loaded = true;
@@ -56,21 +56,11 @@ class ChurchState extends State<ChurchWidget> {
     if(_loaded = true){
     markerSet = createMarkerSetFromJsonData(_churchList);
     today = findTodayWeekday();
-   // findCurrentHourStatus();
+    }
+   
     }
   }
-  /* void findCurrentHourStatus(){
-    var currentHour = DateTime.parse('1969-07-20 20:18:04Z').hour;
-     
-    for (var i =0; i< _churchList.churches.length;i++){
-      if(!_churchList.churches[i].busyHours.contains(currentHour)){
-         var currentHourStatus ="Quiet Hour";
-         map.putIfAbsent(_churchList.churches[i].name,() => currentHourStatus);
-      }
-     
-    }
-
-  } */
+  
   static String findTodayWeekday(){
     
          switch (DateTime.now().weekday) {
@@ -213,6 +203,34 @@ class ChurchState extends State<ChurchWidget> {
       bearing: 45.0,
     )));
   }
+   String getOpenHour (Churches church) {
+    switch (today) {
+                case "Monday":
+                  return "${church.hoursOpen[0].monday.toString()}";
+                  break;
+                case "Tuesday":
+                  return "${church.hoursOpen[0].tuesday.toString()}";
+                  break;
+                  case "Wednesday":
+                  return "${church.hoursOpen[0].wednesday.toString()}";
+                  break;
+                  case "Thursday":
+                  return "${church.hoursOpen[0].thursday.toString()}";
+                  break;
+                  case "Friday":
+                  return "${church.hoursOpen[0].friday.toString()}";
+                  break;
+                  case "Saturday":
+                  return "${church.hoursOpen[0].saturday.toString()}";
+                  break;
+                  case "Sunday":
+                  return "${church.hoursOpen[0].sunday.toString()}";
+                  break;
+                  default: "";
+                  break;
+              }
+    
+  }
 String getHourStatus (Churches church) {
       var currentHour = DateTime.now().hour;
     
@@ -274,6 +292,64 @@ String getHourStatus (Churches church) {
                   break;
 
   }
+  }
+  String getBusyHourTimingDetails (Churches church ){
+   
+              switch (today) {
+                case "Monday":
+                  return "${church.busyHours[0].monday.toString()}";
+                  break;
+                case "Tuesday":
+                  return "${church.busyHours[0].tuesday.toString()}";
+                  break;
+                  case "Wednesday":
+                  return "${church.busyHours[0].wednesday.toString()}";
+                  break;
+                  case "Thursday":
+                  return "${church.busyHours[0].thursday.toString()}";
+                  break;
+                  case "Friday":
+                  return "${church.busyHours[0].friday.toString()}";
+                  break;
+                  case "Saturday":
+                  return "${church.busyHours[0].saturday.toString()}";
+                  break;
+                  case "Sunday":
+                  return "${church.busyHours[0].sunday.toString()}";
+                  break;
+                  default: "";
+                  break;
+              }
+
+            
+  }
+  String getQuietHourTimingDetails (Churches church ){
+   
+              switch (today) {
+                case "Monday":
+                  return "${church.quietHours[0].monday.toString()}";
+                  break;
+                case "Tuesday":
+                  return "${church.quietHours[0].tuesday.toString()}";
+                  break;
+                  case "Wednesday":
+                  return "${church.quietHours[0].wednesday.toString()}";
+                  break;
+                  case "Thursday":
+                  return "${church.quietHours[0].thursday.toString()}";
+                  break;
+                  case "Friday":
+                  return "${church.quietHours[0].friday.toString()}";
+                  break;
+                  case "Saturday":
+                  return "${church.quietHours[0].saturday.toString()}";
+                  break;
+                  case "Sunday":
+                  return "${church.quietHours[0].sunday.toString()}";
+                  break;
+                  default: "";
+                  break;
+              }            
   }
   Widget _boxes(String _image, Churches church) {
     Color customColor = Colors.red;
@@ -440,6 +516,8 @@ String getHourStatus (Churches church) {
   }
 
   Widget churchDetailsContainer(Churches church, String hourStatus) {
+    String hoursOpen = [].toString();
+    hoursOpen = getOpenHour(church);
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
@@ -459,7 +537,7 @@ String getHourStatus (Churches church) {
         SizedBox(height: 5.0),
         Container(
             child: Text(
-          "Open Timings: ${church.hoursOpen[0].monday}",
+          "Open Timings: ${hoursOpen} ",
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.black54,
@@ -470,7 +548,7 @@ String getHourStatus (Churches church) {
         SizedBox(height: 5.0),
         Container(
             child: Text(
-          hourStatus,
+          hourStatus == null ? 'BusyHour': hourStatus,
           style: TextStyle(
               color: Colors.black87,
               fontSize: 18.0,
@@ -496,13 +574,17 @@ String getHourStatus (Churches church) {
   }
 
   Widget _buildHourDetailsDialog(BuildContext context, Churches church)  {
+    String todayValue = "Today";
+    todayValue = today;
     if(church == null){
     return CircularProgressIndicator();
   }else
+  
     return new AlertDialog(
       backgroundColor: Colors.black38,
       
-      title:  Text('$today Timings ',style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold), ),
+      title:  Text('${todayValue == null ? 'Today':todayValue} Timings ',
+      style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold), ),
       content: new Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -514,34 +596,7 @@ String getHourStatus (Churches church) {
             style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
           ),
           Text(
-            (() {
-              switch (today) {
-                case "Monday":
-                  return "${church.busyHours[0].monday.sublist(0).toString()}";
-                  break;
-                case "Tuesday":
-                  return "${church.busyHours[0].tuesday.sublist(0).toString()}";
-                  break;
-                  case "Wednesday":
-                  return "${church.busyHours[0].wednesday.sublist(0).toString()}";
-                  break;
-                  case "Thursday":
-                  return "${church.busyHours[0].thursday.sublist(0).toString()}";
-                  break;
-                  case "Friday":
-                  return "${church.busyHours[0].friday.sublist(0).toString()}";
-                  break;
-                  case "Saturday":
-                  return "${church.busyHours[0].saturday.sublist(0).toString()}";
-                  break;
-                  case "Sunday":
-                  return "${church.busyHours[0].sunday.sublist(0).toString()}";
-                  break;
-                  default: "";
-                  break;
-              }
-
-            })(),
+            getBusyHourTimingDetails(church) == null? '':getBusyHourTimingDetails(church),
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.redAccent),
           ),
@@ -552,44 +607,11 @@ String getHourStatus (Churches church) {
             style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
           ),
           Text(
-            (() {
-              if (DateTime.now().weekday == 1) {
-                return "${church.quietHours[0].monday.sublist(0).toString()}";
-              }
-              if (DateTime.now().weekday == 2) {
-                return "${church.quietHours[0].tuesday.sublist(0).toString()}";
-              }
-              if (DateTime.now().weekday == 3) {
-                return "${church.quietHours[0].wednesday.sublist(0).toString()}";
-              }
-              if (DateTime.now().weekday == 4) {
-                return "${church.quietHours[0].thursday.sublist(0).toString()}";
-              }
-              if (DateTime.now().weekday == 5) {
-                return "${church.quietHours[0].friday.sublist(0).toString()}";
-              }
-              if (DateTime.now().weekday == 6) {
-                return "${church.quietHours[0].saturday.sublist(0).toString()}";
-              }
-              if (DateTime.now().weekday == 7) {
-                return "${church.quietHours[0].sunday.sublist(0).toString()}";
-              }
-              else
-              return "";
-              
-            })(),
+            getQuietHourTimingDetails(church) == null?'' :getQuietHourTimingDetails(church),
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.green,),
           ),
-          /*  if (DateTime.parse('1969-07-20 20:18:04Z').weekday == 1){
-               // Text('Hello'),
-               print( DateTime.parse('1969-07-20 20:18:04Z').weekday == 1 +'hello')
-                //Text('${church.busyHours[0].monday.indexOf(1).toString()}',textAlign: TextAlign.justify,),
-          } else
-          Text('Hello'), */
-
-          // _buildAboutText(),
-          // _buildLogoAttribution(),
+         
         ],
       ),
       actions: <Widget>[
@@ -604,17 +626,3 @@ String getHourStatus (Churches church) {
     );
   }
 }
-/* class AlertDialogScreen extends StatefulWidget {
-  @override
-  AlertDialogScreenState createState() => AlertDialogScreenState();
-}
-
-class AlertDialogScreenState extends State<AlertDialogScreen> {
-  Churches church = null;
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return null;
-  }
-}
- */
