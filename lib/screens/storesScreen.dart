@@ -76,8 +76,8 @@ class StoreState extends State<StoreWidget> {
   }
 
   static String findTodayWeekday() {
-    print(DateTime.parse('1969-07-20 20:18:04Z').weekday);
-    switch (DateTime.parse('1969-07-20 20:18:04Z').weekday) {
+    
+    switch (DateTime.now().weekday) {
       case 1:
         return "Monday";
         break;
@@ -193,21 +193,75 @@ class StoreState extends State<StoreWidget> {
       bearing: 45.0,
     )));
   }
+String getHourStatus (Stores store) {
+      var currentHour = DateTime.now().hour;
+    
+    switch (today) {
+                case "Monday": if(store.busyHours[0].monday.contains(currentHour))
+                  return "Busy Hour";
+                  else
+                  return "Quiet Hour";
+                  break;
+                case "Tuesday":
+                  if(store.busyHours[0].tuesday.contains(currentHour)){
+                  return "Busy Hour";
+                  }
+                  else{
+                  return "Quiet Hour";
+                      }
+                  break;
+                  case "Wednesday":
+                  if(store.busyHours[0].wednesday.contains(currentHour)){
+                  return "Busy Hour";
+                  }
+                  else{
+                  return "Quiet Hour";
+                      }
+                  break;
+                  case "Thursday":
+                  if(store.busyHours[0].thursday.contains(currentHour)){
+                  return "Busy Hour";
+                  }
+                  else{
+                  return "Quiet Hour";
+                      }
+                  break;
+                  case "Friday":
+                  if(store.busyHours[0].friday.contains(currentHour)){
+                  return "Busy Hour";
+                  }
+                  else{
+                  return "Quiet Hour";
+                      }
+                  break;
+                  case "Saturday":
+                  if(store.busyHours[0].saturday.contains(currentHour)){
+                  return "Busy Hour";
+                  }
+                  else{
+                  return "Quiet Hour";
+                      }
+                  break;
+                  case "Sunday":
+                  if(store.busyHours[0].sunday.contains(currentHour)){
+                  return "Busy Hour";
+                  }
+                  else{
+                  return "Quiet Hour";
+                      }
+                  break;
+                  default: "";
+                  break;
 
+  }
+  }
   Widget _boxes(String _image, Stores store) {
-    var currentHour= DateTime.now().hour;
-      Color customColor = Colors.red;
-      String hourStatus = "Busy Hour";
-      /* if(map.containsKey(church.name)) {
-          customColor = Colors.green;
-          hourStatus = "Quiet Hour";
-      } */
-       if(store.busyHours.contains(currentHour)){
-         hourStatus ="Busy Hour";
-         customColor = Colors.red;
-      }  else {
-        hourStatus ="Quiet Hour";
-         customColor = Colors.green;
+    Color customColor = Colors.red;
+      String hourStatus = getHourStatus(store);
+      if(hourStatus == "Quiet Hour"){
+        customColor = Colors.green;
+      } else {
+        customColor = Colors.red;
       }
     return GestureDetector(
       onTap: () {
@@ -432,7 +486,7 @@ class StoreState extends State<StoreWidget> {
                 child: Text(
                   "Timing details",
                   style: TextStyle(
-                    color: Colors.black87,
+                    color: Colors.deepPurple,
                     fontSize: 18.0,
                     fontWeight: FontWeight.bold,
                     decoration: TextDecoration.underline,

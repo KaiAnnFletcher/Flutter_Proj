@@ -13,19 +13,19 @@ Our app provides users with the information they need to plan their trips accord
 
 These are the location categories we are reporting busy/quiet times for. Each location category has 4 unique locations which are pinned on the map (hard-coded data from the JSON API):
 
-![church img here] (/assets/images/church.png)
+![Church](/assets/images/church.png)
 
-![restaurant img here] (/assets/images/restaurant.png)
+![Restaurant](/assets/images/restaurant.png)
 
-![store img here] (/assets/images/store.png)
+![Store](/assets/images/store.png)
 
-![test center img here] (/assets/images/testCenter.png)
+![Test Center](/assets/images/testCenter.png)
 
 Details regarding busy/quiet hours pops up as a modal. For test centers, the details are different.
 
-![timings img here] (/assets/images/timings.png)
+![Timings](/assets/images/timings.png)
 
-![Testing details here] (assets/images/Testingdetails.png)
+![Testing Details](/assets/images/Testingdetails.png)
 
 ##Technology, Tools and Architecture
 
@@ -40,36 +40,43 @@ General Directory Structure:
 |- dart_tool
 |   |- flutter_build
 |       |- d88cd3bc7e79a8...
+|
 |-android
 |   |-.gradle
 |   |-.settings
 |   |-app
 |   |-gradle
 |       |-wrapper
+|
 |-api
+|
 |-assets
 |   |-icons
 |   |-images
+|
 |-build
 |   |-app
-    |-cloud_firestore
-    |-cloud_firestore_web
-    |-firebase_core
-    |-firebase_core_web
+|   |-cloud_firestore
+|   |-cloud_firestore_web
+|   |-firebase_core
+|   |-firebase_core_web
 |   |-flutter_plugin_android_lifecycle
 |   |-google_maps_flutter
 |   |-kotlin
 |       |-sessions
+|
 |-ios
 |   |- Flutter
 |   |-Runner
 |   |-Runner.xcodeproj
 |   |-Runner.xcworkspace
+|
 |-lib
 |   |-constants
 |   |-model
 |   |-screens
 |   |-widgets
+|
 |-test
 ```
 
