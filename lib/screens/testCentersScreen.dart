@@ -372,7 +372,7 @@ Future<void> _gotoLocation(double lat,double long) async {
                 child: Text(
                   "Testing details",
                   style: TextStyle(
-                      color: Colors.black87,
+                      color: Colors.deepPurple,
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,
                       decoration: TextDecoration.underline,
