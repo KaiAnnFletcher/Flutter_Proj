@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 //import './screens/home.dart';
 import './screens/home2.dart';
 
@@ -45,8 +46,9 @@ class SafeZone extends StatelessWidget {
          '/Learning': (BuildContext context) => new Learning(),
       }, */
      // home: new HomeWidget(), //home page displayed
-      home :TabbedAppBarSample(),
+      home: TabbedAppBarSample(),
      // home:Sample(),
     );
   }
 }
+

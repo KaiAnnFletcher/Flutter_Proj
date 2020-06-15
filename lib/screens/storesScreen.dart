@@ -330,14 +330,14 @@ class StoreState extends State<StoreWidget> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: _boxes(
-                  "https://lh5.googleusercontent.com/p/AF1QipPBQ8AYzjMK8ivgd5gC2qj1LRLmmt-xi4EprK0m=w108-h108-n-k-no",
+                  "https://d2xpeceo701ble.cloudfront.net/~/media/images/pages/2017/macys-herald-sq/macys_768_opt.jpg?vs=1&d=20170623T184348Z",
                   _storeList.stores[0]), 
             ),
             SizedBox(width: 10.0),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: _boxes(
-                  "https://lh5.googleusercontent.com/p/AF1QipO8qPRg9SqQWKYsxlcJRKHIqs6EkJ6me0CZW7NP=w108-h108-n-k-no",
+                  "https://specials-images.forbesimg.com/imageserve/5daedd54616a45000704463c/960x0.jpg?cropX1=0&cropX2=2400&cropY1=15&cropY2=1617",
                   _storeList.stores[
                       1]), 
             ),
@@ -345,7 +345,7 @@ class StoreState extends State<StoreWidget> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: _boxes(
-                  "https://lh5.googleusercontent.com/p/AF1QipObRlxdndVweV8jlB3tp33PqsORblasqA1rUt4E=w108-h108-n-k-no",
+                  "https://fashionweekdaily.com/wp-content/uploads/2019/11/shutterstock_485085631.jpg",
                   _storeList.stores[
                       2]), 
             ),
@@ -353,7 +353,7 @@ class StoreState extends State<StoreWidget> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: _boxes(
-                  "https://lh5.googleusercontent.com/p/AF1QipNZupw6idK-83MSVV9dzrSfgJYhIaEVPjYQI20W=w108-h108-n-k-no",
+                  "https://s3-media0.fl.yelpcdn.com/bphoto/OWUg4d-58VCoaGClRVoolw/348s.jpg",
                   _storeList.stores[
                       3]), 
             ),

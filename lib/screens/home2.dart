@@ -9,12 +9,28 @@ import 'package:Flutter_Proj/screens/testCentersScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+//import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'churchesScreen.dart';
 import 'restaurantsScreen.dart';
 import 'storesScreen.dart';
 import 'testCentersScreen.dart';
 //import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+// class TabbedAppBarSample extends StatefulWidget {
+//   @override
+//   _TabbedAppBarSampleState createState() => _TabbedAppBarSampleState();
+// }
+
+// class _TabbedAppBarSampleState extends State<TabbedAppBarSample> {
+//   Choice _selectedChoice = choices[0];// the app's state
+
+//   void _select(Choice choice) {
+//     //Causes the app to rebuild wih new _selectedChoice.
+//     setState(() {
+//       _selectedChoice = choice;
+//     });
+//   }
 
 class TabbedAppBarSample extends StatelessWidget {
   @override
@@ -47,6 +63,7 @@ class TabbedAppBarSample extends StatelessWidget {
               ),
             ),
           ),
+          
           body: TabBarView(
             children: choices.map((Choice choice) {
               return Padding(
@@ -86,7 +103,7 @@ class ChoiceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     // final TextStyle textStyle = Theme.of(context).textTheme.title;
     
-    if (choice.title.startsWith('Restaurent')) {
+    if (choice.title.startsWith('Restaurant')) {
       return Card(
         color: Colors.white,
         child: Container(
