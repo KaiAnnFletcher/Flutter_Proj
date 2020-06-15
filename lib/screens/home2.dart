@@ -86,7 +86,7 @@ class ChoiceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     // final TextStyle textStyle = Theme.of(context).textTheme.title;
     
-    if (choice.title.startsWith('Restaurent')) {
+    if (choice.title.startsWith('Restaurant')) {
       return Card(
         color: Colors.white,
         child: Container(
