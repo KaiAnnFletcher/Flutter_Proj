@@ -15,7 +15,29 @@ These are the location categories we are reporting busy/quiet times for. Each lo
 
 Details regarding busy/quiet hours pops up as a modal. For test centers, the details are different.
 
-![Test Center](/assets/images/test_center_Details.png)![Test Center Testing Details](/assets/images/testing_center_testing_Details.png)![Restaurant](/assets/images/restaurant.png)![Restaurant Timing Details](/assets/images/restaurant_timing_Detail.png)![Store](/assets/images/store.png)![Store Timing Details](/assets/images/store_timing.png)![Church](/assets/images/church.png)![Church Timing Details](/assets/images/church_timing_details.png)
+<table>
+  <tr>
+    <td>Test Center Layout</td>
+     <td>Test Center Testing Details</td>
+     <td>Restaurant Layout</td>
+     <td>Restaurant Timing Details</td>
+     <td>Store Layout</td>
+     <td>Store Timing Details</td>
+     <td>Church Layout</td>
+     <td>Church Timing Details</td>
+  </tr>
+  <tr>
+    <td><img src="/assets/images/test_center_Details.png" width=270 height=480></td>
+    <td><img src="/assets/images/testing_center_testing_Details.png" width=270 height=480></td>
+    <td><img src="/assets/images/restaurant.png" width=270 height=480></td>
+    <td><img src="/assets/images/store.png" width=270 height=480></td>
+    <td><img src="/assets/images/store_timing.png" width=270 height=480></td>
+    <td><img src="/assets/images/church.png" width=270 height=480></td>
+    <td><img src="/assets/images/church_timing_details.png" width=270 height=480></td>
+  </tr>
+ </table>
+
+<!-- ![Test Center](/assets/images/test_center_Details.png)![Test Center Testing Details](/assets/images/testing_center_testing_Details.png)![Restaurant](/assets/images/restaurant.png)![Restaurant Timing Details](/assets/images/restaurant_timing_Detail.png)![Store](/assets/images/store.png)![Store Timing Details](/assets/images/store_timing.png)![Church](/assets/images/church.png)![Church Timing Details](/assets/images/church_timing_details.png) -->
 
 ##Technology, Tools and Architecture
 
