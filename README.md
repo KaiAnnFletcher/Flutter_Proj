@@ -15,7 +15,7 @@ These are the location categories we are reporting busy/quiet times for. Each lo
 
 Details regarding busy/quiet hours pops up as a modal. For test centers, the details are different.
 
-<table>
+<!-- <table>
   <tr>
     <td>Test Center Layout</td>
      <td>Test Center Testing Details</td>
@@ -35,9 +35,9 @@ Details regarding busy/quiet hours pops up as a modal. For test centers, the det
     <td><img src="/assets/images/church.png" width=270 height=480></td>
     <td><img src="/assets/images/church_timing_details.png" width=270 height=480></td>
   </tr>
- </table>
+ </table> -->
 
-<!-- ![Test Center](/assets/images/test_center_Details.png)![Test Center Testing Details](/assets/images/testing_center_testing_Details.png)![Restaurant](/assets/images/restaurant.png)![Restaurant Timing Details](/assets/images/restaurant_timing_Detail.png)![Store](/assets/images/store.png)![Store Timing Details](/assets/images/store_timing.png)![Church](/assets/images/church.png)![Church Timing Details](/assets/images/church_timing_details.png) -->
+![Test Center](/assets/images/test_center_Details.png)![Test Center Testing Details](/assets/images/testing_center_testing_Details.png)![Restaurant](/assets/images/restaurant.png)![Restaurant Timing Details](/assets/images/restaurant_timing_Detail.png)![Store](/assets/images/store.png)![Store Timing Details](/assets/images/store_timing.png)![Church](/assets/images/church.png)![Church Timing Details](/assets/images/church_timing_details.png)
 
 ##Technology, Tools and Architecture
 
