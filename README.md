@@ -13,19 +13,9 @@ Our app provides users with the information they need to plan their trips accord
 
 These are the location categories we are reporting busy/quiet times for. Each location category has 4 unique locations which are pinned on the map (hard-coded data from the JSON API):
 
-![Church](/assets/images/church.png)
-
-![Restaurant](/assets/images/restaurant.png)
-
-![Store](/assets/images/store.png)
-
-![Test Center](/assets/images/testCenter.png)
-
 Details regarding busy/quiet hours pops up as a modal. For test centers, the details are different.
 
-![Timings](/assets/images/timings.png)
-
-![Testing Details](/assets/images/Testingdetails.png)
+![Test Center](/assets/images/test_center_Details.png) | ![Test Center Testing Details](/assets/images/testing_center_testing_Details.png) | ![Restaurant](/assets/images/restaurant.png) | ![Restaurant Timing Details](/assets/images/restaurant_timing_Detail.png) | ![Store](/assets/images/store.png) | ![Store Timing Details](/assets/images/store_timing.png) | ![Church](/assets/images/church.png) | ![Church Timing Details](/assets/images/church_timing_details.png)
 
 ##Technology, Tools and Architecture
 
