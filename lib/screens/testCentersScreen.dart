@@ -45,8 +45,8 @@ class TestCenterState extends State<TestCenterWidget> {
   @override
   void initState() {
     super.initState();
-    futureIndiaTotalCases =
-        fetchIndiaTotalCasesRootNet(); //fetchIndiaTotalCases();
+    //futureIndiaTotalCases =        fetchIndiaTotalCasesRootNet(); //fetchIndiaTotalCases();
+       if(mounted) {
         loadTestCenter().then((s) => setState(() {
           _testcenterList = s;
           _loaded = true;
@@ -54,6 +54,7 @@ class TestCenterState extends State<TestCenterWidget> {
         //if(_testcenterList == null) return ;
         markerSet = createMarkerSetFromJsonData(_testcenterList);
         today = findTodayWeekday();
+  }
   }
   Set<Marker> createMarkerSetFromJsonData(TestCenterList list){
     Set<Marker> markerSet = new HashSet<Marker>();

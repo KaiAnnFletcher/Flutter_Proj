@@ -47,8 +47,8 @@ class StoreState extends State<StoreWidget> {
   @override
   void initState() {
     super.initState();
-    futureIndiaTotalCases =
-        fetchIndiaTotalCasesRootNet(); //fetchIndiaTotalCases();
+    //futureIndiaTotalCases =        fetchIndiaTotalCasesRootNet(); //fetchIndiaTotalCases();
+        if(mounted) { // Added this check prevent error which occurs when widget is not present in the parent tree.
     loadRestaurant().then((s) => setState(() {
           _storeList = s;
           _loaded = true;
@@ -57,7 +57,7 @@ class StoreState extends State<StoreWidget> {
     markerSet = createMarkerSetFromJsonData(_storeList);
     today = findTodayWeekday();
   }
-
+  }
   Set<Marker> createMarkerSetFromJsonData(StoreList list) {
     Set<Marker> markerSet = new HashSet<Marker>();
     if (list == null) return markerSet;
@@ -418,6 +418,8 @@ String getHourStatus (Stores store) {
   }
 
   Widget storeDetailsContainer(Stores store,String hourStatus) {
+    String hoursOpen = [].toString();
+    hoursOpen = getOpenHour(store);
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
@@ -463,7 +465,7 @@ String getHourStatus (Stores store) {
         SizedBox(height: 5.0),
         Container(
             child: Text(
-          "Open Timings: ${store.hoursOpen[0].monday}",
+          "Open Timings: ${hoursOpen}",
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.black54,
@@ -474,7 +476,7 @@ String getHourStatus (Stores store) {
         SizedBox(height: 5.0),
         Container(
             child: Text(
-          hourStatus,
+          hourStatus == null ? 'BusyHour': hourStatus,
           style: TextStyle(
               color: Colors.black87,
               fontSize: 18.0,
@@ -503,13 +505,15 @@ String getHourStatus (Stores store) {
   }
 
   Widget _buildHourDetailsDialog(BuildContext context, Stores store) {
+    String todayValue = "Today";
+    todayValue = today;
     if(store == null){
     return CircularProgressIndicator();
   }else
     return new AlertDialog(
       backgroundColor: Colors.black38,
       title: Text(
-        '$today Timings ',
+        '${todayValue == null ? 'Today':todayValue} Timings ',
         style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold),
       ),
       content: new Column(
@@ -523,33 +527,7 @@ String getHourStatus (Stores store) {
             style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
           ),
           Text(
-            (() {
-              switch (today) {
-                case "Monday":
-                  return "${store.busyHours[0].monday.sublist(0).toString()}";
-                  break;
-                case "Tuesday":
-                  return "${store.busyHours[0].tuesday.sublist(0).toString()}";
-                  break;
-                case "Wednesday":
-                  return "${store.busyHours[0].wednesday.sublist(0).toString()}";
-                  break;
-                case "Thursday":
-                  return "${store.busyHours[0].thursday.sublist(0).toString()}";
-                  break;
-                case "Friday":
-                  return "${store.busyHours[0].friday.sublist(0).toString()}";
-                  break;
-                case "Saturday":
-                  return "${store.busyHours[0].saturday.sublist(0).toString()}";
-                  break;
-                case "Sunday":
-                  return "${store.busyHours[0].sunday.sublist(0).toString()}";
-                  break;
-                  default: "";
-                  break;
-              }
-            })(),
+            getBusyHourTimingDetails(store) == null? '':getBusyHourTimingDetails(store),
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.redAccent),
           ),
@@ -562,32 +540,7 @@ String getHourStatus (Stores store) {
             style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
           ),
           Text(
-            (() {
-              if (DateTime.now().weekday == 1) {
-                return "${store.quietHours[0].monday.sublist(0).toString()}";
-              }
-              if (DateTime.now().weekday == 2) {
-                return "${store.quietHours[0].tuesday.sublist(0).toString()}";
-              }
-              if (DateTime.now().weekday == 3) {
-                return "${store.quietHours[0].wednesday.sublist(0).toString()}";
-              }
-              if (DateTime.now().weekday == 4) {
-                return "${store.quietHours[0].thursday.sublist(0).toString()}";
-              }
-              if (DateTime.now().weekday == 5) {
-                return "${store.quietHours[0].friday.sublist(0).toString()}";
-              }
-              if (DateTime.now().weekday == 6) {
-                return "${store.quietHours[0].saturday.sublist(0).toString()}";
-              }
-              if (DateTime.now().weekday == 7) {
-                return "${store.quietHours[0].saturday.sublist(0).toString()}";
-              }
-              else
-              return "";
-              
-            })(),
+            getQuietHourTimingDetails(store) == null?'' :getQuietHourTimingDetails(store),
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.green,
@@ -607,4 +560,92 @@ String getHourStatus (Stores store) {
       ],
     );
   }
+   String getOpenHour (Stores store) {
+    switch (today) {
+                case "Monday":
+                  return "${store.hoursOpen[0].monday.toString()}";
+                  break;
+                case "Tuesday":
+                  return "${store.hoursOpen[0].tuesday.toString()}";
+                  break;
+                  case "Wednesday":
+                  return "${store.hoursOpen[0].wednesday.toString()}";
+                  break;
+                  case "Thursday":
+                  return "${store.hoursOpen[0].thursday.toString()}";
+                  break;
+                  case "Friday":
+                  return "${store.hoursOpen[0].friday.toString()}";
+                  break;
+                  case "Saturday":
+                  return "${store.hoursOpen[0].saturday.toString()}";
+                  break;
+                  case "Sunday":
+                  return "${store.hoursOpen[0].sunday.toString()}";
+                  break;
+                  default: "";
+                  break;
+              }
+    
+  }
+   String getBusyHourTimingDetails (Stores store ){
+   
+              switch (today) {
+                case "Monday":
+                  return "${store.busyHours[0].monday.toString()}";
+                  break;
+                case "Tuesday":
+                  return "${store.busyHours[0].tuesday.toString()}";
+                  break;
+                  case "Wednesday":
+                  return "${store.busyHours[0].wednesday.toString()}";
+                  break;
+                  case "Thursday":
+                  return "${store.busyHours[0].thursday.toString()}";
+                  break;
+                  case "Friday":
+                  return "${store.busyHours[0].friday.toString()}";
+                  break;
+                  case "Saturday":
+                  return "${store.busyHours[0].saturday.toString()}";
+                  break;
+                  case "Sunday":
+                  return "${store.busyHours[0].sunday.toString()}";
+                  break;
+                  default: "";
+                  break;
+              }
+            
+  }
+  String getQuietHourTimingDetails (Stores store ){
+   
+              switch (today) {
+                case "Monday":
+                  return "${store.quietHours[0].monday.toString()}";
+                  break;
+                case "Tuesday":
+                  return "${store.quietHours[0].tuesday.toString()}";
+                  break;
+                  case "Wednesday":
+                  return "${store.quietHours[0].wednesday.toString()}";
+                  break;
+                  case "Thursday":
+                  return "${store.quietHours[0].thursday.toString()}";
+                  break;
+                  case "Friday":
+                  return "${store.quietHours[0].friday.toString()}";
+                  break;
+                  case "Saturday":
+                  return "${store.quietHours[0].saturday.toString()}";
+                  break;
+                  case "Sunday":
+                  return "${store.quietHours[0].sunday.toString()}";
+                  break;
+                  default: "";
+                  break;
+              }
+            
+  }
+ 
+
 }

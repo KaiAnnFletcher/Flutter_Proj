@@ -4,13 +4,13 @@ import 'dart:convert';
 
 import 'package:Flutter_Proj/constants/constant.dart';
 import 'package:Flutter_Proj/model/indiaCases_rootnet.dart';
+import 'package:Flutter_Proj/model/restaurants.dart';
 import 'package:Flutter_Proj/widgets/counter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:Flutter_Proj/model/restaurants.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:logger/logger.dart';
 
 import '../model/restaurants.dart';
@@ -52,15 +52,19 @@ class RestaurantState extends State<RestaurantWidget> {
   @override
   void initState() {
     super.initState();
-    futureIndiaTotalCases =
-        fetchIndiaTotalCasesRootNet(); //fetchIndiaTotalCases();
-        loadRestaurant().then((s) => setState(() {
+    //futureIndiaTotalCases =        fetchIndiaTotalCasesRootNet(); 
+        //fetchIndiaTotalCases();
+        if(mounted) {
+          loadRestaurant().then((s) => setState(() {
           _restaurantList = s;
           _loaded = true;
         }));
         if(_restaurantList == null) return ;
         markerSet = createMarkerSetFromJsonData(_restaurantList);
         today = findTodayWeekday();
+    
+  }
+        
         
   }
    static String findTodayWeekday(){
@@ -259,7 +263,8 @@ Future<void> _gotoLocation(double lat,double long) async {
   }
   Widget _boxes(String _image, Restaurant restaurant){
    Color customColor = Colors.red;
-      String hourStatus = getHourStatus(restaurant);
+      String hourStatus = "Quiet Hour";
+      hourStatus = getHourStatus(restaurant);
       if(hourStatus == "Quiet Hour"){
         customColor = Colors.green;
       } else {
@@ -386,8 +391,38 @@ Future<void> _gotoLocation(double lat,double long) async {
       ),
     );
   }
+  String getOpenHour (Restaurant restaurant) {
+    switch (today) {
+                case "Monday":
+                  return "${restaurant.hoursOpen[0].monday.toString()}";
+                  break;
+                case "Tuesday":
+                  return "${restaurant.hoursOpen[0].tuesday.toString()}";
+                  break;
+                  case "Wednesday":
+                  return "${restaurant.hoursOpen[0].wednesday.toString()}";
+                  break;
+                  case "Thursday":
+                  return "${restaurant.hoursOpen[0].thursday.toString()}";
+                  break;
+                  case "Friday":
+                  return "${restaurant.hoursOpen[0].friday.toString()}";
+                  break;
+                  case "Saturday":
+                  return "${restaurant.hoursOpen[0].saturday.toString()}";
+                  break;
+                  case "Sunday":
+                  return "${restaurant.hoursOpen[0].sunday.toString()}";
+                  break;
+                  default: "";
+                  break;
+              }
+    
+  }
 
   Widget restaurantDetailsContainer(Restaurant restaurant,String hourStatus) {
+    String hoursOpen = [].toString();
+    hoursOpen = getOpenHour(restaurant);
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
@@ -414,7 +449,7 @@ Future<void> _gotoLocation(double lat,double long) async {
                   fontWeight: FontWeight.bold,
                 ),
                 ),
-              Text(restaurant.delivery,
+              Text(restaurant.delivery == null ?'Yes':restaurant.delivery,
               style: TextStyle(
                   color: Colors.orange,
                   fontSize: 14.0,
@@ -428,7 +463,7 @@ Future<void> _gotoLocation(double lat,double long) async {
                   fontSize: 15.0,
                   fontWeight: FontWeight.bold,
                 ),),
-                 Text(restaurant.takeaway,
+                 Text(restaurant.takeaway == null ?'Yes':restaurant.takeaway,
               style: TextStyle(
                   color: Colors.orange,
                   fontSize: 14.0,
@@ -441,7 +476,8 @@ Future<void> _gotoLocation(double lat,double long) async {
           SizedBox(height:5.0),
         Container(
                   child: Text(
-                "Open Timings: ${restaurant.hoursOpen[0].monday}",
+                    
+                "Open Timings: ${hoursOpen} ",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.black54,
@@ -452,7 +488,7 @@ Future<void> _gotoLocation(double lat,double long) async {
               SizedBox(height:5.0),
         Container(
             child: Text(
-          hourStatus,
+          hourStatus == null ? 'BusyHour': hourStatus,
           style: TextStyle(
               color: Colors.black,
               fontSize: 18.0,
@@ -478,26 +514,8 @@ Future<void> _gotoLocation(double lat,double long) async {
       ],
     );
   }
-  Widget _buildHourDetailsDialog(BuildContext context, Restaurant restaurant)  {
-    if(restaurant == null){
-      return CircularProgressIndicator();
-    } else 
-    return new AlertDialog(
-      backgroundColor: Colors.black38,
-      
-      title:  Text('$today Timings ',style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold), ),
-      content: new Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          //var now = DateTime.parse('1969-07-20 20:18:04Z').day;
-          Text(
-            'BusyHours Today',
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
-          ),
-          Text(
-            (() {
+  String getBusyHourTimingDetails (Restaurant restaurant ){
+   
               switch (today) {
                 case "Monday":
                   return "${restaurant.busyHours[0].monday.toString()}";
@@ -524,7 +542,61 @@ Future<void> _gotoLocation(double lat,double long) async {
                   break;
               }
 
-            })(),
+            
+  }
+  String getQuietHourTimingDetails (Restaurant restaurant ){
+   
+              switch (today) {
+                case "Monday":
+                  return "${restaurant.quietHours[0].monday.toString()}";
+                  break;
+                case "Tuesday":
+                  return "${restaurant.quietHours[0].tuesday.toString()}";
+                  break;
+                  case "Wednesday":
+                  return "${restaurant.quietHours[0].wednesday.toString()}";
+                  break;
+                  case "Thursday":
+                  return "${restaurant.quietHours[0].thursday.toString()}";
+                  break;
+                  case "Friday":
+                  return "${restaurant.quietHours[0].friday.toString()}";
+                  break;
+                  case "Saturday":
+                  return "${restaurant.quietHours[0].saturday.toString()}";
+                  break;
+                  case "Sunday":
+                  return "${restaurant.quietHours[0].sunday.toString()}";
+                  break;
+                  default: "";
+                  break;
+              }
+
+            
+  }
+  Widget _buildHourDetailsDialog(BuildContext context, Restaurant restaurant)  {
+    String todayValue = "Today";
+    todayValue = today;
+    if(restaurant == null){
+      return CircularProgressIndicator();
+    } else 
+    return new AlertDialog(
+      backgroundColor: Colors.black38,
+      
+      title:  Text('${todayValue == null ? 'Today':todayValue} Timings ',
+      style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold), ),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          //var now = DateTime.parse('1969-07-20 20:18:04Z').day;
+          Text(
+            'BusyHours Today',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+          ),
+          Text(
+            getBusyHourTimingDetails(restaurant) == null? '':getBusyHourTimingDetails(restaurant),
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.redAccent),
           ),
@@ -535,44 +607,11 @@ Future<void> _gotoLocation(double lat,double long) async {
             style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
           ),
           Text(
-            (() {
-              if (DateTime.now().weekday == 1) {
-                return "${restaurant.quietHours[0].monday.sublist(0).toString()}";
-              }
-              if (DateTime.now().weekday == 2) {
-                return "${restaurant.quietHours[0].tuesday.sublist(0).toString()}";
-              }
-              if (DateTime.now().weekday == 3) {
-                return "${restaurant.quietHours[0].wednesday.sublist(0).toString()}";
-              }
-              if (DateTime.now().weekday == 4) {
-                return "${restaurant.quietHours[0].thursday.sublist(0).toString()}";
-              }
-              if (DateTime.now().weekday == 5) {
-                return "${restaurant.quietHours[0].friday.sublist(0).toString()}";
-              }
-              if (DateTime.now().weekday == 6) {
-                return "${restaurant.quietHours[0].saturday.sublist(0).toString()}";
-              }
-              if (DateTime.now().weekday == 7) {
-                return "${restaurant.quietHours[0].saturday.sublist(0).toString()}";
-              }
-              else
-              return "";
-              
-            })(),
+            getQuietHourTimingDetails(restaurant) == null?'' :getQuietHourTimingDetails(restaurant),
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.green,),
           ),
-          /*  if (DateTime.parse('1969-07-20 20:18:04Z').weekday == 1){
-               // Text('Hello'),
-               print( DateTime.parse('1969-07-20 20:18:04Z').weekday == 1 +'hello')
-                //Text('${church.busyHours[0].monday.indexOf(1).toString()}',textAlign: TextAlign.justify,),
-          } else
-          Text('Hello'), */
-
-          // _buildAboutText(),
-          // _buildLogoAttribution(),
+         
         ],
       ),
       actions: <Widget>[
