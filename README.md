@@ -1,5 +1,7 @@
 # Safe-Zone
 
+Click this link to view our demo: [Safe-Zone](https://www.youtube.com/watch?v=xoMrt-vMl9M&feature=youtu.be)
+
 ##Background:
 Safe-Zone is currently a concept mobile app we have designed with mock-up data that shows the busy and quiet hours for certain restaurants, covid-19 test centers, stores and churches in the city of New York which was very hard-hit by the covid-19 pandemic. 
 
@@ -38,8 +40,6 @@ Details regarding busy/quiet hours pops up as a modal. For test centers, the det
  </table> -->
 
 ![Test Center](/assets/images/test_center_Details.png)![Test Center Testing Details](/assets/images/testing_center_testing_Details.png)![Restaurant](/assets/images/restaurant.png)![Restaurant Timing Details](/assets/images/restaurant_timing_Detail.png)![Store](/assets/images/store.png)![Store Timing Details](/assets/images/store_timing.png)![Church](/assets/images/church.png)![Church Timing Details](/assets/images/church_timing_details.png)
-
-[Youtube demo link](https://www.youtube.com/watch?v=xoMrt-vMl9M&feature=youtu.be)
 
 ##Technology, Tools and Architecture
 
